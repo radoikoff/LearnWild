@@ -1,4 +1,4 @@
-namespace LearnWild.Web.Models
+namespace LearnWild.Web.ViewModels
 {
     public class ErrorViewModel
     {

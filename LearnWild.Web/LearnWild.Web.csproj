@@ -15,4 +15,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LearnWild.Common\LearnWild.Common.csproj" />
+    <ProjectReference Include="..\LearnWild.Data\LearnWild.Data.csproj" />
+    <ProjectReference Include="..\LearnWild.Web.ViewModels\LearnWild.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>
