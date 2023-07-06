@@ -8,11 +8,15 @@ namespace LearnWild.Data.Models
     {
         public Topic()
         {
+            this.Id = Guid.NewGuid();
             this.Resources = new HashSet<Resource>();
         }
 
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+
+        public Guid CourseId { get; set; }
+        public Course Course { get; set; } = null!;
 
         [Required]
         [MaxLength(TitleMaxLength)]

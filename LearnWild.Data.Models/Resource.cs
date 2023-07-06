@@ -6,10 +6,15 @@ namespace LearnWild.Data.Models
 {
     public class Resource
     {
-        [Key]
-        public int Id { get; set; }
+        public Resource()
+        {
+            this.Id = Guid.NewGuid();
+        }
 
-        public int TopicId { get; set; }
+        [Key]
+        public Guid Id { get; set; }
+
+        public Guid TopicId { get; set; }
         public Topic Topic { get; set; } = null!;
 
         [Required]

@@ -7,7 +7,7 @@ namespace LearnWild.Data.Models
         public Guid UserId { get; set; }
         public ApplicationUser Student { get; set; } = null!;
 
-        public int TrainingEventId { get; set; }
+        public Guid TrainingEventId { get; set; }
         public TrainingEvent TrainingEvent { get; set; } = null!;
 
         public DateTime AppliedOn { get; set; }

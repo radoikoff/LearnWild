@@ -10,12 +10,13 @@ namespace LearnWild.Data.Models
     {
         public TrainingEvent()
         {
+            this.Id = Guid.NewGuid();
             this.Registrations = new List<EventRegistration>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int CourseId { get; set; }
+        public Guid CourseId { get; set; }
         public Course Course { get; set; } = null!;
 
         public DateTime Start { get; set; }
