@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Web", "LearnWild.Web\LearnWild.Web.csproj", "{CB832CDD-0D2C-4EB5-A55E-EE76B059482F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Web", "LearnWild.Web\LearnWild.Web.csproj", "{CB832CDD-0D2C-4EB5-A55E-EE76B059482F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Common", "LearnWild.Common\LearnWild.Common.csproj", "{34E16A4A-B0EF-44ED-8899-AF1F34489B1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Common", "LearnWild.Common\LearnWild.Common.csproj", "{34E16A4A-B0EF-44ED-8899-AF1F34489B1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Data", "LearnWild.Data\LearnWild.Data.csproj", "{AEE887A0-710E-4C1A-AF1E-AB5124DC97A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Data", "LearnWild.Data\LearnWild.Data.csproj", "{AEE887A0-710E-4C1A-AF1E-AB5124DC97A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Data.Models", "LearnWild.Data.Models\LearnWild.Data.Models.csproj", "{4DAE847D-413B-4B57-89F6-3FFE4C6A84FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Data.Models", "LearnWild.Data.Models\LearnWild.Data.Models.csproj", "{4DAE847D-413B-4B57-89F6-3FFE4C6A84FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Web.ViewModels", "LearnWild.Web.ViewModels\LearnWild.Web.ViewModels.csproj", "{74B83A84-707E-4983-B513-DEB6ABFB79DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Web.ViewModels", "LearnWild.Web.ViewModels\LearnWild.Web.ViewModels.csproj", "{74B83A84-707E-4983-B513-DEB6ABFB79DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Services", "LearnWild.Services\LearnWild.Services.csproj", "{6159A928-92E5-4E1B-B029-16027F92C538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{74B83A84-707E-4983-B513-DEB6ABFB79DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74B83A84-707E-4983-B513-DEB6ABFB79DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74B83A84-707E-4983-B513-DEB6ABFB79DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6159A928-92E5-4E1B-B029-16027F92C538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6159A928-92E5-4E1B-B029-16027F92C538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6159A928-92E5-4E1B-B029-16027F92C538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6159A928-92E5-4E1B-B029-16027F92C538}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

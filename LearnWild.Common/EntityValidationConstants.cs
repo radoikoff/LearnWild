@@ -9,6 +9,15 @@
 
             public const int DescriptionMinLength = 3;
             public const int DescriptionMaxLength = 2000;
+
+            public const int MinDuration = 1;
+            public const int MaxDuration = 100;
+
+            public const int MinCredit = 1;
+            public const int MaxCredit = 100;
+
+            public const string MinPrice = "1";
+            public const string MaxPrice = "1000";
         }
 
         public static class CourseType

@@ -1,5 +1,7 @@
 using LearnWild.Data;
 using LearnWild.Data.Models;
+using LearnWild.Services;
+using LearnWild.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,9 @@ namespace LearnWild.Web
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ITypeService, TypeService>();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
