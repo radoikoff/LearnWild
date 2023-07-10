@@ -32,7 +32,7 @@ namespace LearnWild.Web.ViewModels.Course
         [DisplayName("Course Type")]
         public int TypeId { get; set; }
 
-        public Guid? DefaultTeacherId { get; set; }
+        //public Guid? DefaultTeacherId { get; set; }
 
         public IEnumerable<OptionsViewModel> Categories { get; set; } = new HashSet<OptionsViewModel>();
         public IEnumerable<OptionsViewModel> Types { get; set; } = new HashSet<OptionsViewModel>();

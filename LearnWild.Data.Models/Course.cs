@@ -42,8 +42,13 @@ namespace LearnWild.Data.Models
 
         public bool Deleted { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+
+        public Guid CreatedBy { get; set; }
+
         public ICollection<Topic> Topics { get; set; }
 
         public ICollection<TrainingEvent> TrainingEvents { get; set; }
+
     }
 }

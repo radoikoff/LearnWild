@@ -2,19 +2,22 @@
 using LearnWild.Web.ViewModels.Course;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using LearnWild.Web.Infrastructure.Extensions;
 
 namespace LearnWild.Web.Controllers
 {
     [Authorize]
     public class CourseController : Controller
     {
-        private ICategoryService _categoryService;
-        private ITypeService _typeService;
+        private readonly ICategoryService _categoryService;
+        private readonly ITypeService _typeService;
+        private readonly ICourceService _courseService;
 
-        public CourseController(ICategoryService categoryService, ITypeService typeService)
+        public CourseController(ICategoryService categoryService, ITypeService typeService, ICourceService courseService)
         {
             _categoryService = categoryService;
             _typeService = typeService;
+            _courseService = courseService;
         }
 
         [HttpGet]
@@ -35,6 +38,22 @@ namespace LearnWild.Web.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CourseFormModel inputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                inputModel.Categories = await _categoryService.AllCategoriesAsync();
+                inputModel.Types = await _typeService.AllTypesAsync();
+                return View(inputModel);
+            }
 
+            string creatorId = User.GetId();
+
+            await _courseService.CreateCourseAsync(inputModel, creatorId);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

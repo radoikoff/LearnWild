@@ -20,6 +20,7 @@
     <ProjectReference Include="..\LearnWild.Common\LearnWild.Common.csproj" />
     <ProjectReference Include="..\LearnWild.Data\LearnWild.Data.csproj" />
     <ProjectReference Include="..\LearnWild.Services\LearnWild.Services.csproj" />
+    <ProjectReference Include="..\LearnWild.Web.Infrastructure\LearnWild.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\LearnWild.Web.ViewModels\LearnWild.Web.ViewModels.csproj" />
   </ItemGroup>
 

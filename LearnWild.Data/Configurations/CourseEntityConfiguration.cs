@@ -21,6 +21,9 @@ namespace LearnWild.Data.Configurations
 
             builder.Property(p => p.Price)
                    .HasPrecision(18, 4);
+
+            builder.Property(p => p.CreatedOn)
+                   .HasDefaultValueSql("GETDATE()");
         }
     }
 }
