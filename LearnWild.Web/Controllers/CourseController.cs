@@ -55,5 +55,20 @@ namespace LearnWild.Web.Controllers
 
             return RedirectToAction(nameof(All));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            bool exists = await _courseService.ExistsAsync(id);
+
+            if (!exists) 
+            { 
+                return NotFound(id);
+            }
+
+            CourseDetailsViewModel? model = await _courseService.GetByIdAsync(id);
+
+            return View(model);
+        }
     }
 }

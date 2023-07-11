@@ -2,6 +2,7 @@
 using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Course;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,28 @@ namespace LearnWild.Services
 
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistsAsync(string id) => await _context.Courses.AnyAsync(c => c.Id == Guid.Parse(id));
+
+
+        public async Task<CourseDetailsViewModel?> GetByIdAsync(string id)
+        {
+            var course = await _context.Courses
+                .Select(c => new CourseDetailsViewModel
+                {
+                    Id = c.Id.ToString(),
+                    Title = c.Title,
+                    Description = c.Description,
+                    Price = c.Price,
+                    Category = c.Category.Name,
+                    Type = c.Type.Name,
+                    Duration = c.Duration,
+                    Credits = c.MaxCredits,
+                    Topics = c.Topics.Select(t => t.Title).ToArray()
+                })
+                .FirstOrDefaultAsync(c => c.Id == id);
+            return course;
         }
     }
 }

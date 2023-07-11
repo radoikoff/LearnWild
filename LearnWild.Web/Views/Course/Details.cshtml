@@ -1,0 +1,72 @@
+﻿@model CourseDetailsViewModel
+
+@{
+    ViewBag.Title = "Course Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-body text-white bg-primary">
+            <h2 class="card-title">@Model.Title</h2>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+
+            @if (Model.Price == null)
+            {
+                <span class="badge me-2 rounded-pill bg-success">Free</span>
+            }
+            else
+            {
+                <span class="badge me-2 rounded-pill bg-warning text-dark">Paid</span>
+            }
+            <span class="badge me-auto rounded-pill bg-warning ">@Model.Type</span>
+            <span class="card-text me-2">Category: <b>@Model.Category</b></span>
+            <span class="card-text me-2">Credits: <b>@Model.Credits</b></span>
+            <span class="card-text me-2">Duration: <b>@Model.Duration</b> h</span>
+            @if (Model.Price != null)
+            {
+                <span class="card-text">Price: <b>@($"{Model.Price:f2}")</b> BGN</span>
+            }
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>You will learn:</h5>
+            @if (Model.Topics.Any())
+            {
+                <ul>
+                    @foreach (var topic in Model.Topics)
+                    {
+                        <li>topic</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>Topics not defiend yet!</p>
+            }
+            
+            @if (this.User.Identity?.IsAuthenticated ?? false)
+            {
+                <a class="btn btn-warning" asp-controller="Topic" asp-action="All" asp-route-id="@Model.Id">Edit Topics</a>
+            }
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h6 class="card-title">Course Actions</h6>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                @if (this.User.Identity?.IsAuthenticated ?? false)
+                {
+                    <a class=" me-2 btn btn-warning" asp-controller="Course" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Course" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
