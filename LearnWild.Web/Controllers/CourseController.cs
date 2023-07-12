@@ -70,5 +70,38 @@ namespace LearnWild.Web.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            CourseFormModel? model = await _courseService.GetForEditByIdAsync(id);
+
+            if (model == null)
+            {
+                return NotFound(id);
+            }
+
+            model.Categories = await _categoryService.AllCategoriesAsync();
+            model.Types = await _typeService.AllTypesAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CourseFormModel inputModel, string id)
+        {
+            if (!ModelState.IsValid)
+            {
+                inputModel.Categories = await _categoryService.AllCategoriesAsync();
+                inputModel.Types = await _typeService.AllTypesAsync();
+                return View(inputModel);
+            }
+
+            await _courseService.EditCourseAsync(inputModel, id);
+
+            return RedirectToAction(nameof(All));
+        }
+
     }
 }

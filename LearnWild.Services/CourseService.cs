@@ -39,6 +39,26 @@ namespace LearnWild.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task EditCourseAsync(CourseFormModel inputModel, string id)
+        {
+            var course = await _context.Courses.FindAsync(Guid.Parse(id));
+
+            if(course == null)
+            {
+                throw new InvalidOperationException("Invalid course Id");
+            }
+
+            course.Title = inputModel.Title;    
+            course.Description = inputModel.Description;
+            course.Duration = inputModel.Duration;
+            course.MaxCredits = inputModel.Credits;
+            course.Price = inputModel.Price;
+            course.TypeId = inputModel.TypeId;
+            course.CategoryId = inputModel.CategoryId;
+
+            await _context.SaveChangesAsync();       
+        }
+
         public async Task<bool> ExistsAsync(string id) => await _context.Courses.AnyAsync(c => c.Id == Guid.Parse(id));
 
 
@@ -59,6 +79,25 @@ namespace LearnWild.Services
                 })
                 .FirstOrDefaultAsync(c => c.Id == id);
             return course;
+        }
+
+        public async Task<CourseFormModel?> GetForEditByIdAsync(string id)
+        {
+            var courseModel = await _context.Courses
+                .Where(c => c.Id.ToString() == id)
+                .Select(c => new CourseFormModel
+                {
+                    Title = c.Title,
+                    Description = c.Description,
+                    Price = c.Price,
+                    CategoryId = c.CategoryId,
+                    TypeId = c.TypeId,
+                    Duration = c.Duration,
+                    Credits = c.MaxCredits
+                })
+                .FirstOrDefaultAsync();
+
+            return courseModel;
         }
     }
 }

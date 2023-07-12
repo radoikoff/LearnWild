@@ -1,0 +1,15 @@
+﻿@model CourseFormModel
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_CourseFormPartial" model="@Model"/>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}
