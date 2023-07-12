@@ -43,12 +43,12 @@ namespace LearnWild.Services
         {
             var course = await _context.Courses.FindAsync(Guid.Parse(id));
 
-            if(course == null)
+            if (course == null)
             {
                 throw new InvalidOperationException("Invalid course Id");
             }
 
-            course.Title = inputModel.Title;    
+            course.Title = inputModel.Title;
             course.Description = inputModel.Description;
             course.Duration = inputModel.Duration;
             course.MaxCredits = inputModel.Credits;
@@ -56,11 +56,27 @@ namespace LearnWild.Services
             course.TypeId = inputModel.TypeId;
             course.CategoryId = inputModel.CategoryId;
 
-            await _context.SaveChangesAsync();       
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsAsync(string id) => await _context.Courses.AnyAsync(c => c.Id == Guid.Parse(id));
 
+        public async Task<IEnumerable<CourseAllViewModel>> GetAllAsync()
+        {
+            var courses = await _context.Courses
+                                        .Select(c => new CourseAllViewModel
+                                        {
+                                            Id = c.Id.ToString(),
+                                            Title = c.Title,
+                                            Category = c.Category.Name,
+                                            Type = c.Type.Name,
+                                            Credits = c.MaxCredits,
+                                            Duration = c.Duration,
+                                            Price = c.Price
+                                        })
+                                        .ToArrayAsync();
+            return courses;
+        }
 
         public async Task<CourseDetailsViewModel?> GetByIdAsync(string id)
         {

@@ -21,9 +21,14 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index() => RedirectToAction(nameof(All));
+ 
+
+        [HttpGet]
         public async Task<IActionResult> All()
         {
-            return View();
+            IEnumerable<CourseAllViewModel> courses = await _courseService.GetAllAsync();
+            return View(courses);
         }
 
         [HttpGet]

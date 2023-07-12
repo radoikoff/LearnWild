@@ -1,0 +1,24 @@
+﻿@model IEnumerable<CourseAllViewModel>
+
+<div class="container">
+	<div class="row">
+		@foreach (var course in Model)
+		{
+			<div class="col-md-4">
+				<div class="card mb-3">
+					<div class="card-header">
+						<h4 class="card-title">@course.Title</h4>
+					</div>
+					<div class="card-body">
+						<h6>Duration: @course.Duration</h6>
+						<h6>Category: @course.Category</h6>
+						<h6>Type: @course.Type</h6>
+						<h6>Price: @(course.Price != null ? $"{course.Price:f2} BGN" : "Free")</h6>
+						<br />
+						<a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">Details</a>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
