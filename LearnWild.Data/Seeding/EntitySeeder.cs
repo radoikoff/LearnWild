@@ -1,13 +1,8 @@
 ﻿using LearnWild.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LearnWild.Data.Seeding
 {
-    internal static class DatabaseSeeder
+    internal static class EntitySeeder
     {
         internal static IEnumerable<Category> GenerateCategories()
         {

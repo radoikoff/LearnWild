@@ -4,6 +4,7 @@ using LearnWild.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnWild.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230716140621_SeedUsersAndRolesData")]
+    partial class SeedUsersAndRolesData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +102,7 @@ namespace LearnWild.Data.Migrations
                         {
                             Id = new Guid("86522b7c-9752-4b0d-a327-59cd8bf8dd62"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "55353e58-2c96-4715-b1ed-ec27bad2d090",
+                            ConcurrencyStamp = "a3257bd8-d94f-456e-a99b-52233ab8944b",
                             Email = "kenobi@learn.com",
                             EmailConfirmed = false,
                             FirstName = "Obi-Wan",
@@ -108,9 +110,8 @@ namespace LearnWild.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "KENOBI@LEARN.COM",
                             NormalizedUserName = "KENOBI@LEARN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMz6FHQaRpfgg0bTJwiTc/NKPvI9p8xyxU7Y/+PDC/I7yUKKVZ/AOXJ4GaPn21rkvw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKpeov+Eth9A+QJudYm2qs/0YirQQvu7LoDq94QNtVOpSMyMeREPOFBSUBxAbNiyjA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dc199bf7-1347-4e47-9639-0bc485a6604b",
                             TwoFactorEnabled = false,
                             UserName = "kenobi@learn.com"
                         },
@@ -118,7 +119,7 @@ namespace LearnWild.Data.Migrations
                         {
                             Id = new Guid("386db847-7c35-4281-a8c6-acd00de18424"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7a9259c1-a5f6-41f4-b11f-671b0f2f38e0",
+                            ConcurrencyStamp = "3ae3a9d9-1634-4dff-9a21-afa56057334b",
                             Email = "vader@learn.com",
                             EmailConfirmed = false,
                             FirstName = "Darth",
@@ -126,9 +127,8 @@ namespace LearnWild.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "VADER@LEARN.COM",
                             NormalizedUserName = "VADER@LEARN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFlaKQV9yakX+RjMZ2dlWJx+GGNEt5xz3teID13BXHTDZqUqgKcco8lxnsG6NDolEg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOxmDb0ivmY9KUfH1aeKK5LkwZDQZomBAryfzgsbWrlrS9jBGXHCTF2Kc+uKRGx9VQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "64f1d8fb-db73-44a4-9967-0d398c13090e",
                             TwoFactorEnabled = false,
                             UserName = "vader@learn.com"
                         },
@@ -136,7 +136,7 @@ namespace LearnWild.Data.Migrations
                         {
                             Id = new Guid("c3dba02e-2e03-4989-81c5-c8288f264c64"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3b5e778c-8d89-4e67-a1bc-3d9b256c0160",
+                            ConcurrencyStamp = "64d18763-38d7-4bb9-a3cc-ead2a4ad971c",
                             Email = "student@learn.com",
                             EmailConfirmed = false,
                             FirstName = "Ivan",
@@ -144,9 +144,8 @@ namespace LearnWild.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@LEARN.COM",
                             NormalizedUserName = "STUDENT@LEARN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKj7mAAV2IGFQjSSR1augDBih+dl3uIfTPVZiVizid61h1OolyA3O/z8Fqs+Bfi7tQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAwFvyVsz99J/JuggCcmPacwagZiWXXMKFqloMQ3FXRudfHsWx8rvyAY7r+raZNvuA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2468b318-38e5-4f9a-8c73-5732fa79f569",
                             TwoFactorEnabled = false,
                             UserName = "student@learn.com"
                         });
@@ -439,14 +438,14 @@ namespace LearnWild.Data.Migrations
                         new
                         {
                             Id = new Guid("a806c7be-5b3c-4b69-ae53-8971f082f6ee"),
-                            ConcurrencyStamp = "fabd1ff0-c77a-4ce9-9b6e-0068d1f4746c",
+                            ConcurrencyStamp = "0adc0227-f4f0-4830-8aa4-e11d7c97f82a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("cf31e446-4f8e-4b70-a201-4b73eb510263"),
-                            ConcurrencyStamp = "f3d73b4a-c0ee-46f9-91c4-54ee4fa5b1c5",
+                            ConcurrencyStamp = "597c85c4-5219-4db8-8d9e-4491f496e37e",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         });

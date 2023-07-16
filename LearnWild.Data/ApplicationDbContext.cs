@@ -1,4 +1,5 @@
-﻿using LearnWild.Data.Models;
+﻿using LearnWild.Data.Extensions;
+using LearnWild.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +25,11 @@ namespace LearnWild.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            var configAssembly = Assembly.GetAssembly(typeof(ApplicationDbContext)) ?? 
+            var configAssembly = Assembly.GetAssembly(typeof(ApplicationDbContext)) ??
                                  Assembly.GetExecutingAssembly();
 
             builder.ApplyConfigurationsFromAssembly(configAssembly);
+            builder.SeedData();
 
             base.OnModelCreating(builder);
         }
