@@ -35,7 +35,6 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EventFormModel model, string courseId)
         {
 
