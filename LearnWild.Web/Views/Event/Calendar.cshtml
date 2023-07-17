@@ -1,0 +1,43 @@
+﻿@*@model IEnumerable<EventAllViewModel>*@
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-2 col-xl-8">
+            <div id="full-event-calendar"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src='~/lib/fullcalendar/dist/index.global.min.js'></script>
+    <script src='~/lib/fullcalendar/dist/bootstrap5/index.global.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('full-event-calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,listMonth'
+                },
+                initialView: 'dayGridMonth',
+                //eventDidMount: function (info) {
+                //    var tooltip = new Tooltip(info.el, {
+                //        title: info.event.extendedProps.description,
+                //        placement: 'top',
+                //        trigger: 'hover',
+                //        container: 'body'
+                //    });
+                //},
+                events: {
+                    url: '/api/events',
+                }
+
+            });
+            calendar.render();
+        });
+
+    </script>
+}

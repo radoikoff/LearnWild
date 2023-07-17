@@ -18,6 +18,22 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index() => RedirectToAction(nameof(Calendar));
+
+
+        [HttpGet]
+        public IActionResult Calendar() => View();
+
+
+        [HttpGet("/api/events")]
+        public async Task<IActionResult> GetAllEventsForCalendar()
+        {
+            IEnumerable<EventCalendarViewModel> allEvents = await _eventService.GetCalendarData();
+
+            return new JsonResult(allEvents);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create(string courseId)
         {
             if (!await _courseService.ExistsAsync(courseId))
