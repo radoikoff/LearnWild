@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<CourseAllViewModel>
 
 <div class="container">
+	<div class="row my-3">
+		<div class="col-md-12">
+			<a asp-controller="Course" asp-action="Create" class="btn btn-success">Create New</a>
+		</div>
+	</div>
 	<div class="row">
 		@foreach (var course in Model)
 		{
@@ -15,6 +20,7 @@
 						<h6>Type: @course.Type</h6>
 						<h6>Price: @(course.Price != null ? $"{course.Price:f2} BGN" : "Free")</h6>
 						<br />
+						<a asp-controller="Event" asp-action="Create" asp-route-courseid="@course.Id" class="btn btn-warning">Schedule an instance</a>
 						<a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">Details</a>
 					</div>
 				</div>

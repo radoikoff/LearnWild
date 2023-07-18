@@ -2,6 +2,10 @@
 {
     public static class GeneralApplicationConstants
     {
-        
+        public static class ApplicationRoles
+        {
+            public const string TeacherRoleName = "Teacher";
+            public const string AdminRoleName = "Admin";
+        }
     }
 }
