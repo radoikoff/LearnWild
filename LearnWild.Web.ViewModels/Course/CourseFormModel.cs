@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using LearnWild.Web.ViewModels.User;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using static LearnWild.Common.EntityValidationConstants.Course;
 
 namespace LearnWild.Web.ViewModels.Course
 {
-    public class CourseFormModel
+    public class CourseFormModel : IValidatableObject
     {
         [Required]
         [StringLength(TitleMaxLength, MinimumLength =TitleMinLength)]
@@ -20,9 +21,7 @@ namespace LearnWild.Web.ViewModels.Course
         [Required]
         public DateTime? End { get; set; }
 
-        [Range(MinDuration, MaxDuration)]
-        [DisplayName("Duration in hours")]
-        public int Duration { get; set; }
+        public bool Active { get; set; } = true;
 
         [Range(MinCredit, MaxCredit)]
         public int Credits { get; set; }
@@ -38,9 +37,20 @@ namespace LearnWild.Web.ViewModels.Course
         [DisplayName("Course Type")]
         public int TypeId { get; set; }
 
-        //public Guid? DefaultTeacherId { get; set; }
+        [Required]
+        [DisplayName("Teacher")]
+        public string TeacherId { get; set; } = null!;
 
         public IEnumerable<OptionsViewModel> Categories { get; set; } = new HashSet<OptionsViewModel>();
         public IEnumerable<OptionsViewModel> Types { get; set; } = new HashSet<OptionsViewModel>();
+        public IEnumerable<UserSelectViewModel> Teachers { get; set; } = new HashSet<UserSelectViewModel>();
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (this.End <= this.Start)
+            {
+                yield return new ValidationResult("End Date must be after Start date!", new[] { nameof(End) });
+            }
+        }
     }
 }

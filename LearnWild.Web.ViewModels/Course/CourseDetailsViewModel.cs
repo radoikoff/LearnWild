@@ -8,7 +8,11 @@
 
         public string Description { get; set; } = null!;
 
-        public int Duration { get; set; }
+        public string Start { get; set; } = null!;
+
+        public string End { get; set; } = null!;
+
+        public bool Active { get; set; }
 
         public int Credits { get; set; }
 
@@ -17,6 +21,8 @@
         public string Category { get; set; } = null!;
 
         public string Type { get; set; } = null!;
+
+        public string Teacher { get; set; } = null!;
 
         public IEnumerable<string> Topics { get; set; } = new HashSet<string>();
     }

@@ -4,6 +4,7 @@ using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Course;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,12 +27,14 @@ namespace LearnWild.Services
             {
                 Title = inputModel.Title,
                 Description = inputModel.Description,
-                Duration = inputModel.Duration,
+                Start = inputModel.Start ?? DateTime.MinValue,
+                End = inputModel.End ?? DateTime.MinValue,
+                Active = inputModel.Active,
                 MaxCredits = inputModel.Credits,
                 Price = inputModel.Price,
                 TypeId = inputModel.TypeId,
                 CategoryId = inputModel.CategoryId,
-                DefaultTeacherId = Guid.Parse(creatorId), //TODO: Add dropdown with all teachers to the view,
+                TeacherId = Guid.Parse(inputModel.TeacherId),
                 CreatedBy = Guid.Parse(creatorId)
             };
 
@@ -50,11 +53,14 @@ namespace LearnWild.Services
 
             course.Title = inputModel.Title;
             course.Description = inputModel.Description;
-            course.Duration = inputModel.Duration;
+            course.Start = inputModel.Start ?? DateTime.MinValue;
+            course.End = inputModel.End ?? DateTime.MinValue;
+            course.Active = inputModel.Active;
             course.MaxCredits = inputModel.Credits;
             course.Price = inputModel.Price;
             course.TypeId = inputModel.TypeId;
             course.CategoryId = inputModel.CategoryId;
+            course.TeacherId = Guid.Parse(inputModel.TeacherId);
 
             await _context.SaveChangesAsync();
         }
@@ -64,6 +70,7 @@ namespace LearnWild.Services
         public async Task<IEnumerable<CourseAllViewModel>> GetAllAsync()
         {
             var courses = await _context.Courses
+                                        .Where(c => c.Deleted == false)
                                         .Select(c => new CourseAllViewModel
                                         {
                                             Id = c.Id.ToString(),
@@ -71,8 +78,11 @@ namespace LearnWild.Services
                                             Category = c.Category.Name,
                                             Type = c.Type.Name,
                                             Credits = c.MaxCredits,
-                                            Duration = c.Duration,
-                                            Price = c.Price
+                                            Start = c.Start.ToString("g"),
+                                            End = c.End.ToString("g"),
+                                            Active = c.Active,
+                                            Price = c.Price,
+                                            Teacher = $"{c.Teacher.FirstName} {c.Teacher.LastName}"
                                         })
                                         .ToArrayAsync();
             return courses;
@@ -85,19 +95,21 @@ namespace LearnWild.Services
                 {
                     Id = c.Id.ToString(),
                     Title = c.Title,
-                    Description = c.Description,
-                    Price = c.Price,
                     Category = c.Category.Name,
                     Type = c.Type.Name,
-                    Duration = c.Duration,
                     Credits = c.MaxCredits,
+                    Start = c.Start.ToString("g"),
+                    End = c.End.ToString("g"),
+                    Active = c.Active,
+                    Price = c.Price,
+                    Teacher = $"{c.Teacher.FirstName} {c.Teacher.LastName}",
                     Topics = c.Topics.Select(t => t.Title).ToArray()
                 })
                 .FirstOrDefaultAsync(c => c.Id == id);
             return course;
         }
 
-        public async Task<CourseFormModel?> GetForEditByIdAsync(string id)
+        public async Task<CourseFormModel> GetForEditByIdAsync(string id)
         {
             var courseModel = await _context.Courses
                 .Where(c => c.Id.ToString() == id)
@@ -106,14 +118,25 @@ namespace LearnWild.Services
                     Title = c.Title,
                     Description = c.Description,
                     Price = c.Price,
+                    Start = c.Start,
+                    End = c.End,
+                    Active = c.Active,
                     CategoryId = c.CategoryId,
                     TypeId = c.TypeId,
-                    Duration = c.Duration,
-                    Credits = c.MaxCredits
+                    Credits = c.MaxCredits,
+                    TeacherId = c.TeacherId.ToString(),
                 })
-                .FirstOrDefaultAsync();
+                .FirstAsync();
 
             return courseModel;
+        }
+
+        public async Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null)
+        {
+            var hasOverlap = await _context.Courses.AnyAsync(c => (c.Start < end && c.End > start) &&
+                                                                   c.TeacherId.ToString() == teacherId && 
+                                                                   c.Id.ToString() != currentCourseId);
+            return hasOverlap;
         }
     }
 }

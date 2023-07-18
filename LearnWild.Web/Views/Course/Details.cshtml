@@ -25,7 +25,7 @@
             <span class="badge me-auto rounded-pill bg-warning ">@Model.Type</span>
             <span class="card-text me-2">Category: <b>@Model.Category</b></span>
             <span class="card-text me-2">Credits: <b>@Model.Credits</b></span>
-            <span class="card-text me-2">Duration: <b>@Model.Duration</b> h</span>
+            @*<span class="card-text me-2">Duration: <b>@Model.Duration</b> h</span>*@
             @if (Model.Price != null)
             {
                 <span class="card-text">Price: <b>@($"{Model.Price:f2}")</b> BGN</span>
