@@ -2,13 +2,13 @@
 
 namespace LearnWild.Data.Models
 {
-    public class EventRegistration
+    public class CourseRegistration
     {
-        public Guid UserId { get; set; }
+        public Guid StudentId { get; set; }
         public ApplicationUser Student { get; set; } = null!;
 
-        public Guid TrainingEventId { get; set; }
-        public TrainingEvent TrainingEvent { get; set; } = null!;
+        public Guid CourseId { get; set; }
+        public Course Course { get; set; } = null!;
 
         public DateTime AppliedOn { get; set; }
 

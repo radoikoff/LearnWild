@@ -22,39 +22,41 @@ namespace LearnWild.Services
 
         public async Task CreateAsync(EventFormModel model, string courseId)
         {
-            TrainingEvent trainingEvent = new TrainingEvent()
-            {
-                CourseId = Guid.Parse(courseId),
-                Start = model.Start ?? DateTime.MinValue,
-                End = model.End ?? DateTime.MinValue,
-                TeacherId = Guid.Parse(model.TeacherId),
-                Active = model.Active
-            };
+            //TrainingEvent trainingEvent = new TrainingEvent()
+            //{
+            //    CourseId = Guid.Parse(courseId),
+            //    Start = model.Start ?? DateTime.MinValue,
+            //    End = model.End ?? DateTime.MinValue,
+            //    TeacherId = Guid.Parse(model.TeacherId),
+            //    Active = model.Active
+            //};
 
-            _context.TrainingEvents.Add(trainingEvent);
-            await _context.SaveChangesAsync();
+            //_context.TrainingEvents.Add(trainingEvent);
+            //await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<EventCalendarViewModel>> GetCalendarData()
         {
-            return await _context.TrainingEvents
-                                    .Where(e => e.Active)
-                                    .Select(e => new EventCalendarViewModel()
-                                    {
-                                        Title = e.Course.Title,
-                                        Start = e.Start,
-                                        End = e.End,
-                                        Url = $"/Event/Details/{e.Id}"
-                                    })
-                                    .ToArrayAsync();
+            //return await _context.TrainingEvents
+            //                        .Where(e => e.Active)
+            //                        .Select(e => new EventCalendarViewModel()
+            //                        {
+            //                            Title = e.Course.Title,
+            //                            Start = e.Start,
+            //                            End = e.End,
+            //                            Url = $"/Event/Details/{e.Id}"
+            //                        })
+            //                        .ToArrayAsync();
+            return new List<EventCalendarViewModel>();
         }
 
         public async Task<bool> IsScheduled(DateTime? start, DateTime? end, string courseId, string teacherId)
         {
-            var hasOverlap = await _context.TrainingEvents.AnyAsync(e => (e.Start < end && e.End > start) &&
-                                                                 e.CourseId.ToString() == courseId &&
-                                                                 e.TeacherId.ToString() == teacherId);
-            return hasOverlap;
+            //var hasOverlap = await _context.TrainingEvents.AnyAsync(e => (e.Start < end && e.End > start) &&
+            //                                                     e.CourseId.ToString() == courseId &&
+            //                                                     e.TeacherId.ToString() == teacherId);
+            //return hasOverlap;
+            return false;
         }
     }
 }

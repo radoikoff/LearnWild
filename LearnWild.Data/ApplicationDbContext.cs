@@ -17,8 +17,7 @@ namespace LearnWild.Data
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Course> Courses { get; set; } = null!;
         public DbSet<CourseType> CourseTypes { get; set; } = null!;
-        public DbSet<EventRegistration> EventRegistrations { get; set; } = null!;
-        public DbSet<TrainingEvent> TrainingEvents { get; set; } = null!;
+        public DbSet<CourseRegistration> CourseRegistrations { get; set; } = null!;
         public DbSet<Topic> Topics { get; set; } = null!;
         public DbSet<Resource> Resources { get; set; } = null!;
 

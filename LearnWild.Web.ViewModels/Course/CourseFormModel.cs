@@ -14,6 +14,12 @@ namespace LearnWild.Web.ViewModels.Course
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
 
+        [Required]
+        public DateTime? Start { get; set; }
+
+        [Required]
+        public DateTime? End { get; set; }
+
         [Range(MinDuration, MaxDuration)]
         [DisplayName("Duration in hours")]
         public int Duration { get; set; }

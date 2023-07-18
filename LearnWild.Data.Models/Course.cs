@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static LearnWild.Common.EntityValidationConstants.Course;
 
 namespace LearnWild.Data.Models
@@ -11,7 +10,7 @@ namespace LearnWild.Data.Models
         {
             this.Id = Guid.NewGuid();
             this.Topics = new HashSet<Topic>();
-            this.TrainingEvents = new HashSet<TrainingEvent>();
+            this.Registrations = new HashSet<CourseRegistration>();
         }
 
         [Key]
@@ -25,7 +24,9 @@ namespace LearnWild.Data.Models
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        public int Duration { get; set; }
+        public DateTime Start { get; set; }
+
+        public DateTime End { get; set; }
 
         public int MaxCredits { get; set; }
 
@@ -37,18 +38,21 @@ namespace LearnWild.Data.Models
         public int TypeId { get; set; }
         public CourseType Type { get; set; } = null!;
 
-        public Guid? DefaultTeacherId { get; set; }
-        public ApplicationUser? DefaultTeacher { get; set; } = null!;
+        public Guid TeacherId { get; set; }
+        public ApplicationUser Teacher { get; set; } = null!;
+
+        public bool Active { get; set; }
 
         public bool Deleted { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
         public Guid CreatedBy { get; set; }
+        public ApplicationUser Creator { get; set; } = null!;
 
         public ICollection<Topic> Topics { get; set; }
 
-        public ICollection<TrainingEvent> TrainingEvents { get; set; }
+        public ICollection<CourseRegistration> Registrations { get; set; }
 
     }
 }

@@ -8,8 +8,8 @@ namespace LearnWild.Data.Models
     {
         public ApplicationUser()
         {
-            this.Registrations = new HashSet<EventRegistration>();
-            this.TrainingEvents = new HashSet<TrainingEvent>();
+            this.Registrations = new HashSet<CourseRegistration>();
+            this.TeachingCourses = new HashSet<Course>();
             this.CreatedCourses = new HashSet<Course>();
         }
 
@@ -19,8 +19,8 @@ namespace LearnWild.Data.Models
         [MaxLength(LastNameMaxLength)]
         public string? LastName { get; set; }
 
-        public ICollection<EventRegistration> Registrations { get; set; }
-        public ICollection<TrainingEvent> TrainingEvents { get; set; }
+        public ICollection<CourseRegistration> Registrations { get; set; }
+        public ICollection<Course> TeachingCourses { get; set; }
         public ICollection<Course> CreatedCourses { get; set; }
     }
 }

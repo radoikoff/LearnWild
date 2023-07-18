@@ -4,20 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LearnWild.Data.Configurations
 {
-    public class EventRegistrationEntityConfiguration : IEntityTypeConfiguration<EventRegistration>
+    public class CourseRegistrationEntityConfiguration : IEntityTypeConfiguration<CourseRegistration>
     {
-        public void Configure(EntityTypeBuilder<EventRegistration> builder)
+        public void Configure(EntityTypeBuilder<CourseRegistration> builder)
         {
-            builder.HasKey(k => new { k.UserId, k.TrainingEventId });
+            builder.HasKey(k => new { k.StudentId, k.CourseId });
 
-            builder.HasOne(x => x.TrainingEvent)
+            builder.HasOne(x => x.Course)
                    .WithMany(x => x.Registrations)
-                   .HasForeignKey(x => x.TrainingEventId)
+                   .HasForeignKey(x => x.CourseId)
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Student)
                    .WithMany(x => x.Registrations)
-                   .HasForeignKey(x => x.UserId)
+                   .HasForeignKey(x => x.StudentId)
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.Score)
