@@ -22,8 +22,9 @@ namespace LearnWild.Web
 			builder.Services.AddScoped<ITypeService, TypeService>();
 			builder.Services.AddScoped<ICourceService, CourseService>();
 			builder.Services.AddScoped<IUserService, UserService>();
+			builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 
-			builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 			{
 				options.SignIn.RequireConfirmedAccount = false;
 				options.Password.RequireNonAlphanumeric = false;

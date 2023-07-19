@@ -1,0 +1,43 @@
+﻿@model CourseAllViewModel
+
+<div class="col-md-4">
+	<div class="card mb-3">
+		<div class="card-header">
+			<h4 class="card-title">@Model.Title</h4>
+			@if (Model.Active)
+			{
+				<span class="badge me-auto rounded-pill bg-success ">Active</span>
+			}
+			else
+			{
+				<span class="badge me-auto rounded-pill bg-secondary ">Inactive</span>
+			}
+
+		</div>
+		<div class="card-body">
+
+			<h6>Category: <b>@Model.Category</b></h6>
+			<h6>Type: <b>@Model.Type</b></h6>
+			<h6>Price: <b>@(Model.Price.HasValue ? $"{Model.Price:f2} BGN" : "Free")</b></h6>
+			<div class="d-flex align-content-start">
+				<h6 class="me-2">Start: <b>@Model.Start</b></h6>
+				<h6>End: <b>@Model.End</b></h6>
+			</div>
+			<div class="mt-2">
+				@if (Model.Active)
+				{
+					if (Model.Price.HasValue)
+					{
+						<a asp-controller="Course" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-warning">Buy</a>
+					}
+					else
+					{
+						<a asp-controller="Registration" asp-action="Apply" asp-route-id="@Model.Id" class="btn btn-warning">Apply</a>
+					}
+				}
+
+				<a asp-controller="Course" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
+			</div>
+		</div>
+	</div>
+</div>
