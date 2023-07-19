@@ -2,6 +2,7 @@
 using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Course;
+using LearnWild.Web.ViewModels.Event;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
@@ -109,6 +110,20 @@ namespace LearnWild.Services
             return course;
         }
 
+        public async Task<IEnumerable<EventCalendarViewModel>> GetCalendarData()
+        {
+            return await _context.Courses
+                                    .Where(e => e.Active)
+                                    .Select(e => new EventCalendarViewModel()
+                                    {
+                                        Title = e.Title,
+                                        Start = e.Start,
+                                        End = e.End,
+                                        Url = $"/Course/Details/{e.Id}"
+                                    })
+                                    .ToArrayAsync();
+        }
+
         public async Task<CourseFormModel> GetForEditByIdAsync(string id)
         {
             var courseModel = await _context.Courses
@@ -134,7 +149,7 @@ namespace LearnWild.Services
         public async Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null)
         {
             var hasOverlap = await _context.Courses.AnyAsync(c => (c.Start < end && c.End > start) &&
-                                                                   c.TeacherId.ToString() == teacherId && 
+                                                                   c.TeacherId.ToString() == teacherId &&
                                                                    c.Id.ToString() != currentCourseId);
             return hasOverlap;
         }

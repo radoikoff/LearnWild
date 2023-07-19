@@ -21,7 +21,6 @@ namespace LearnWild.Web
 			builder.Services.AddScoped<ICategoryService, CategoryService>();
 			builder.Services.AddScoped<ITypeService, TypeService>();
 			builder.Services.AddScoped<ICourceService, CourseService>();
-			builder.Services.AddScoped<IEventService, EventService>();
 			builder.Services.AddScoped<IUserService, UserService>();
 
 			builder.Services.AddDefaultIdentity<ApplicationUser>(options =>

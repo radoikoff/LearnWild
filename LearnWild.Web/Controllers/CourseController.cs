@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LearnWild.Web.Infrastructure.Extensions;
 using static LearnWild.Common.GeneralApplicationConstants.ApplicationRoles;
+using LearnWild.Services;
+using LearnWild.Web.ViewModels.Event;
 
 namespace LearnWild.Web.Controllers
 {
@@ -143,6 +145,18 @@ namespace LearnWild.Web.Controllers
             await _courseService.EditCourseAsync(inputModel, id);
 
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpGet]
+        public IActionResult Calendar() => View();
+
+
+        [HttpGet("/api/courses")]
+        public async Task<IActionResult> GetAllEventsForCalendar()
+        {
+            IEnumerable<EventCalendarViewModel> allEvents = await _courseService.GetCalendarData();
+
+            return new JsonResult(allEvents);
         }
 
     }
