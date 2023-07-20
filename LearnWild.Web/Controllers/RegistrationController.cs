@@ -2,8 +2,10 @@
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.Infrastructure.Extensions;
 using LearnWild.Web.ViewModels.Course;
+using LearnWild.Web.ViewModels.Registration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using static LearnWild.Common.GeneralApplicationConstants.ApplicationRoles;
 
 
@@ -63,9 +65,15 @@ namespace LearnWild.Web.Controllers
                 ModelState.AddModelError(string.Empty, "You cannot apply on helaf of other person!");
             }
 
-            if (await _registrationService.IsUserEnrolled(model.StudentId, model.CourseId))
+            if (await _registrationService.IsUserEnrolledAsync(model.StudentId, model.CourseId))
             {
                 ModelState.AddModelError(string.Empty, "You are already enrolled for the course!");
+            }
+
+            var teacher = await _courseService.GetTeacherAsync(model.CourseId);
+            if (model.StudentId == teacher.Id)
+            {
+                ModelState.AddModelError(string.Empty, "You cannot enrole for your own course!");
             }
 
             if (!ModelState.IsValid)
@@ -81,10 +89,17 @@ namespace LearnWild.Web.Controllers
                 return View(model);
             }
 
-            await _registrationService.Register(model.StudentId, model.CourseId);
+            await _registrationService.RegisterAsync(model.StudentId, model.CourseId);
 
             //TODO: Raise success notification
-            return RedirectToAction("Mine", "Course");
+            return RedirectToAction(nameof(Mine));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Mine()
+        {
+            IEnumerable< RegistrationsViewModel> model = await _registrationService.GetRegistrationsByStudentIdAsync(User.GetId());
+            return View(model);
         }
     }
 }

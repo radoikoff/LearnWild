@@ -1,5 +1,6 @@
 ﻿using LearnWild.Web.ViewModels.Course;
 using LearnWild.Web.ViewModels.Event;
+using LearnWild.Web.ViewModels.User;
 
 namespace LearnWild.Services.Interfaces
 {
@@ -12,6 +13,7 @@ namespace LearnWild.Services.Interfaces
         Task<CourseDetailsViewModel?> GetByIdAsync(string id);
         Task<IEnumerable<EventCalendarViewModel>> GetCalendarData();
         Task<CourseFormModel> GetForEditByIdAsync(string id);
-        Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null);
+		Task<UserSelectViewModel> GetTeacherAsync(string courseId);
+		Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null);
     }
 }

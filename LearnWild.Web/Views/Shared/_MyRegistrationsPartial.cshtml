@@ -1,0 +1,21 @@
+﻿@model RegistrationsViewModel
+
+<div class="card mb-3">
+	<div class="card-header">
+		<h5 class="card-title mb-0">Good course @Model.Title</h5>
+	</div>
+	<div class="card-body">
+		<div class="mb-2">
+			<span class="badge me-auto bg-success ">@Model.Category</span>
+			<span class="badge me-auto bg-success ">@Model.Type</span>
+		</div>
+		<div class="d-flex align-content-start">
+			<h6 class="me-2">Start: <b>@Model.Start</b></h6>
+			<h6>End: <b>@Model.End</b></h6>
+		</div>
+		<h6>Credits received: <b>@(Model.CreditsReceived.HasValue ? Model.CreditsReceived : "Not evaluated")</b></h6>
+		<h6>Exam score: <b>@(Model.Score.HasValue ? Model.Score : "Not evaluated")</b></h6>
+		<p class="card-text">Teacher: @Model.Teacher</p>
+		<a class="stretched-link" asp-controller="Course" asp-action="Details" asp-route-id="@Model.CourseId"></a>
+	</div>
+</div>

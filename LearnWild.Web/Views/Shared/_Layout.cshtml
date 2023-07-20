@@ -26,7 +26,7 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="All">Courses</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Mine">My Courses</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Mine">My Courses</a>
 						</li>
 						@if (User.IsTeacher() || User.IsAdmin())
 						{
@@ -34,9 +34,6 @@
 								<a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Create">Create Course</a>
 							</li>
 						}
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Calendar">Events</a>
-						</li>
 					</ul>
 					<partial name="_LoginPartial" />
 				</div>

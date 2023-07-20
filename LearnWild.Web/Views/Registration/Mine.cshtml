@@ -1,0 +1,86 @@
+﻿@model IEnumerable<RegistrationsViewModel>
+@{
+	ViewData["Title"] = "My Registrations";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+@{
+	var activeCourses = Model.Where(r => r.HasStarted).ToArray();
+	var futureCourses = Model.Where(r => r.InFuture).ToArray();
+	var completedCourses = Model.Where(r => r.CreditsReceived.HasValue).ToArray();
+}
+
+<div class="container overflow-hidden">
+	<div class="row">
+		<div class="col-4 mb-3">
+			<div class="card text-dark bg-info">
+				<div class="card-header">
+					<h6 class="card-title text-center mb-0">Active courses</h6>
+				</div>
+			</div>
+		</div>
+		<div class="col-4 mb-3">
+			<div class="card text-dark bg-info">
+				<div class="card-header">
+					<h6 class="card-title text-center mb-0">Future courses</h6>
+				</div>
+			</div>
+		</div>
+		<div class="col-4 mb-3">
+			<div class="card text-dark bg-info">
+				<div class="card-header">
+					<h6 class="card-title text-center mb-0">Passed Courses</h6>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4">
+			@foreach (var course in activeCourses)
+			{
+				<partial name="_MyRegistrationsPartial" model="@course" />
+			}
+
+			@if (!activeCourses.Any())
+			{
+				<div class="card">
+					<div class="card-body py-3">
+						<p class="card-text text-center text-muted">No courses found here</p>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="col-4">
+			@foreach (var course in futureCourses)
+			{
+				<partial name="_MyRegistrationsPartial" model="@course" />
+			}
+
+			@if (!futureCourses.Any())
+			{
+				<div class="card">
+					<div class="card-body py-3">
+						<p class="card-text text-center text-muted">No courses found here</p>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="col-4">
+			@foreach (var course in completedCourses)
+			{
+				<partial name="_MyRegistrationsPartial" model="@course" />
+			}
+
+			@if (!completedCourses.Any())
+			{
+				<div class="card">
+					<div class="card-body py-3">
+						<p class="card-text text-center text-muted">No courses found here</p>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>

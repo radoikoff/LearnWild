@@ -1,6 +1,7 @@
 ﻿using LearnWild.Data;
 using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
+using LearnWild.Web.ViewModels.Registration;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearnWild.Services
@@ -14,14 +15,38 @@ namespace LearnWild.Services
             _dbContext = dbContext;
         }
 
-        public async Task<bool> IsUserEnrolled(string studentId, string courseId)
+        public async Task<IEnumerable<RegistrationsViewModel>> GetRegistrationsByStudentIdAsync(string studentId)
         {
-            bool registered = await _dbContext.CourseRegistrations.AnyAsync(r => r.CourseId.ToString() == courseId && 
+            var registrations = await _dbContext.CourseRegistrations
+                                                .Where(r => r.StudentId.ToString() == studentId)
+                                                .Select(r => new RegistrationsViewModel()
+                                                {
+                                                    CourseId = r.CourseId.ToString(),
+                                                    Title = r.Course.Title,
+                                                    Category = r.Course.Category.Name,
+                                                    Type = r.Course.Type.Name,
+                                                    Start = r.Course.Start.ToString("dd-MMM-yyyy"),
+                                                    End = r.Course.End.ToString("dd-MMM-yyyy"),
+                                                    CreditsReceived = r.CreditsReceived,
+                                                    Score = r.Score,
+                                                    HasStarted = r.Course.Active && 
+                                                                r.Course.Start <= DateTime.UtcNow && 
+                                                                r.Course.End >= DateTime.UtcNow,
+                                                    InFuture = r.Course.Active && r.Course.Start > DateTime.UtcNow,
+                                                    Teacher = r.Course.Teacher.FirstName + ' ' + r.Course.Teacher.LastName,
+                                                })
+                                                .ToArrayAsync();
+            return registrations;
+        }
+
+        public async Task<bool> IsUserEnrolledAsync(string studentId, string courseId)
+        {
+            bool registered = await _dbContext.CourseRegistrations.AnyAsync(r => r.CourseId.ToString() == courseId &&
                                                                                  r.StudentId.ToString() == studentId);
             return registered;
         }
 
-        public async Task Register(string requestorId, string courseId)
+        public async Task RegisterAsync(string requestorId, string courseId)
         {
             var registration = new CourseRegistration()
             {

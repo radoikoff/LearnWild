@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Data.Models", "Le
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Web.ViewModels", "LearnWild.Web.ViewModels\LearnWild.Web.ViewModels.csproj", "{74B83A84-707E-4983-B513-DEB6ABFB79DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Services", "LearnWild.Services\LearnWild.Services.csproj", "{6159A928-92E5-4E1B-B029-16027F92C538}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Services", "LearnWild.Services\LearnWild.Services.csproj", "{6159A928-92E5-4E1B-B029-16027F92C538}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWild.Web.Infrastructure", "LearnWild.Web.Infrastructure\LearnWild.Web.Infrastructure.csproj", "{14D9BE11-409B-4313-9A05-63284B984589}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnWild.Web.Infrastructure", "LearnWild.Web.Infrastructure\LearnWild.Web.Infrastructure.csproj", "{14D9BE11-409B-4313-9A05-63284B984589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

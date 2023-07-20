@@ -3,6 +3,7 @@ using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Course;
 using LearnWild.Web.ViewModels.Event;
+using LearnWild.Web.ViewModels.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
@@ -92,6 +93,7 @@ namespace LearnWild.Services
         public async Task<CourseDetailsViewModel?> GetByIdAsync(string id)
         {
             var course = await _context.Courses
+                .Where(c => c.Id == Guid.Parse(id))
                 .Select(c => new CourseDetailsViewModel
                 {
                     Id = c.Id.ToString(),
@@ -106,7 +108,7 @@ namespace LearnWild.Services
                     Teacher = $"{c.Teacher.FirstName} {c.Teacher.LastName}",
                     Topics = c.Topics.Select(t => t.Title).ToArray()
                 })
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync();
             return course;
         }
 
@@ -127,7 +129,7 @@ namespace LearnWild.Services
         public async Task<CourseFormModel> GetForEditByIdAsync(string id)
         {
             var courseModel = await _context.Courses
-                .Where(c => c.Id.ToString() == id)
+                .Where(c => c.Id == Guid.Parse(id))
                 .Select(c => new CourseFormModel
                 {
                     Title = c.Title,
@@ -144,6 +146,19 @@ namespace LearnWild.Services
                 .FirstAsync();
 
             return courseModel;
+        }
+
+        public async Task<UserSelectViewModel> GetTeacherAsync(string courseId)
+        {
+            var teacher = await _context.Courses
+                                        .Where(c => c.Id == Guid.Parse(courseId))
+                                        .Select(c => new UserSelectViewModel()
+                                        {
+                                            Id = c.TeacherId.ToString(),
+                                            Name = c.Teacher.FirstName + ' ' + c.Teacher.LastName
+                                        })
+                                        .FirstAsync();
+            return teacher;
         }
 
         public async Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null)
