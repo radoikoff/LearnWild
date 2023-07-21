@@ -12,12 +12,15 @@ namespace LearnWild.Data.Models
 
         public DateTime AppliedOn { get; set; }
 
-        public DateTime? ConfirmedOn { get; set; }
+        public DateTime? CompletedOn { get; set; }
 
         public RegisterStatus Status { get; set; }
 
         public int? CreditsReceived { get; set; }
 
         public decimal? Score { get; set; }
+
+        public Guid? OrderId { get; set; }
+        public Order? Order { get; set; }
     }
 }

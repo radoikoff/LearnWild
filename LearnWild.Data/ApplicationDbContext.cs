@@ -20,6 +20,7 @@ namespace LearnWild.Data
         public DbSet<CourseRegistration> CourseRegistrations { get; set; } = null!;
         public DbSet<Topic> Topics { get; set; } = null!;
         public DbSet<Resource> Resources { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder builder)

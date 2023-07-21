@@ -2,9 +2,7 @@
 {
     public enum RegisterStatus
     {
-        NotConfirmed = 0,
-        Confirmed = 1,
-        PaymentPending = 2,
-        Completed = 3,
+        PaymentPending = 1,
+        Completed = 2,
     }
 }

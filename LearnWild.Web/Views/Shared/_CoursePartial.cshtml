@@ -28,7 +28,10 @@
 				{
 					if (Model.Price.HasValue)
 					{
-						<a asp-controller="Course" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-warning">Buy</a>
+						<form asp-controller="Cart" asp-action="Add">
+							<input name="CourseId" value="@Model.Id" hidden/>
+							<button class="btn btn-warning">Add to Cart</button>
+						</form>
 					}
 					else
 					{

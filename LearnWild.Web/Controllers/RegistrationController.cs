@@ -60,9 +60,14 @@ namespace LearnWild.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Such course does not exists!");
             }
 
+            if (!await _courseService.IsActiveAsync(model.CourseId))
+            {
+                ModelState.AddModelError(string.Empty, "You cannot enroll to inactive course");
+            }
+
             if (model.StudentId != User.GetId())
             {
-                ModelState.AddModelError(string.Empty, "You cannot apply on helaf of other person!");
+                ModelState.AddModelError(string.Empty, "You cannot apply on behalf of other person!");
             }
 
             if (await _registrationService.IsUserEnrolledAsync(model.StudentId, model.CourseId))

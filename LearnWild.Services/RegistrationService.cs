@@ -1,5 +1,6 @@
 ﻿using LearnWild.Data;
 using LearnWild.Data.Models;
+using LearnWild.Data.Models.Enums;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Registration;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,8 @@ namespace LearnWild.Services
         public async Task<IEnumerable<RegistrationsViewModel>> GetRegistrationsByStudentIdAsync(string studentId)
         {
             var registrations = await _dbContext.CourseRegistrations
-                                                .Where(r => r.StudentId.ToString() == studentId)
+                                                .Where(r => r.StudentId.ToString() == studentId &&
+                                                            r.Status == RegisterStatus.Completed)
                                                 .Select(r => new RegistrationsViewModel()
                                                 {
                                                     CourseId = r.CourseId.ToString(),
@@ -53,8 +55,8 @@ namespace LearnWild.Services
                 CourseId = Guid.Parse(courseId),
                 StudentId = Guid.Parse(requestorId),
                 AppliedOn = DateTime.UtcNow,
-                Status = Data.Models.Enums.RegisterStatus.Confirmed,
-                ConfirmedOn = DateTime.UtcNow
+                Status = RegisterStatus.Completed,
+                CompletedOn = DateTime.UtcNow
             };
 
             _dbContext.CourseRegistrations.Add(registration);

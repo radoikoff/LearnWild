@@ -14,6 +14,7 @@ namespace LearnWild.Services.Interfaces
         Task<IEnumerable<EventCalendarViewModel>> GetCalendarData();
         Task<CourseFormModel> GetForEditByIdAsync(string id);
 		Task<UserSelectViewModel> GetTeacherAsync(string courseId);
+		Task<bool> IsActiveAsync(string courseId);
 		Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null);
     }
 }

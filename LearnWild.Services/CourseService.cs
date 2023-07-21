@@ -161,6 +161,11 @@ namespace LearnWild.Services
             return teacher;
         }
 
+        public async Task<bool> IsActiveAsync(string courseId)
+        {
+            return await _context.Courses.AnyAsync(c => c.Id == Guid.Parse(courseId) && c.Active == true);
+        }
+
         public async Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null)
         {
             var hasOverlap = await _context.Courses.AnyAsync(c => (c.Start < end && c.End > start) &&

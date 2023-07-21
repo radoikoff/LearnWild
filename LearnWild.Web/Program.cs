@@ -23,6 +23,7 @@ namespace LearnWild.Web
 			builder.Services.AddScoped<ICourceService, CourseService>();
 			builder.Services.AddScoped<IUserService, UserService>();
 			builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+			builder.Services.AddScoped<IOrderService, OrderService>();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 			{
