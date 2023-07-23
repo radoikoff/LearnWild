@@ -2,12 +2,10 @@
 using LearnWild.Data.Models;
 using LearnWild.Data.Models.Enums;
 using LearnWild.Services.Interfaces;
+using LearnWild.Web.ViewModels.Course;
+using LearnWild.Web.ViewModels.Order;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 
 namespace LearnWild.Services
 {
@@ -28,8 +26,10 @@ namespace LearnWild.Services
 
         public async Task AddToOrderAsync(string courseId, string userId)
         {
-            var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.UserId == Guid.Parse(userId) &&
-                                                                         o.Status == OrderStatus.Open);
+            var order = await _dbContext.Orders
+                                        .Include(o=>o.Registrations)
+                                        .FirstOrDefaultAsync(o => o.UserId == Guid.Parse(userId) &&
+                                                                  o.Status == OrderStatus.Open);
             if (order == null)
             {
                 order = new Order()
@@ -38,20 +38,63 @@ namespace LearnWild.Services
                     Status = OrderStatus.Open,
                     UserId = Guid.Parse(userId)
                 };
+
+                _dbContext.Orders.Add(order);
             }
 
-            var registration = new CourseRegistration()
+            if(!order.Registrations.Any(r=>r.CourseId == Guid.Parse(courseId)))
             {
-                CourseId = Guid.Parse(courseId),
-                StudentId = Guid.Parse(userId),
-                AppliedOn = DateTime.UtcNow,
-                Status = RegisterStatus.PaymentPending,
-            };
+                var registration = new CourseRegistration()
+                {
+                    CourseId = Guid.Parse(courseId),
+                    StudentId = Guid.Parse(userId),
+                    AppliedOn = DateTime.UtcNow,
+                    Status = RegisterStatus.PaymentPending
+                };
 
-            order.Registrations.Add(registration);
+                order.Registrations.Add(registration);
+            }
 
-            _dbContext.Orders.Add(order);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<OrderViewModel> GetByUserIdAsync(string userId)
+        {
+            var order = await _dbContext.Orders
+                                    .Where(o => o.UserId == Guid.Parse(userId) &&
+                                                o.Status == OrderStatus.Open)
+                                    .Select(o => new OrderViewModel()
+                                    {
+                                        Id = o.Id.ToString(),
+                                        Courses = o.Registrations.Select(r => new CourseOrderViewModel()
+                                        {
+                                            Title = r.Course.Title,
+                                            Credits = r.Course.MaxCredits,
+                                            Price = r.Course.Price ?? 0
+                                        })
+                                        .ToArray()
+                                    })
+                                    .FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                return new OrderViewModel();
+            }
+
+            decimal subtotal = order.Courses.Sum(c => c.Price);
+            decimal discount = 0;
+
+            if (order.Courses.Count() > 1)
+            {
+                discount = subtotal * 0.10m;
+            }
+
+
+            order.Subtotal = subtotal;
+            order.Discount = discount;
+            order.Total = subtotal - discount;
+
+            return order;
         }
     }
 }
