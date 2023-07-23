@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LearnWild.Web.Infrastructure.Extensions;
 using static LearnWild.Common.GeneralApplicationConstants.ApplicationRoles;
-using LearnWild.Services;
+using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
 using LearnWild.Web.ViewModels.Event;
 
 namespace LearnWild.Web.Controllers
 {
-    [Authorize(Roles = $"{TeacherRoleName},{AdminRoleName}")]
+    [Authorize(Policy = TeacherOrAdmin)]
     public class CourseController : Controller
     {
         private readonly ICategoryService _categoryService;

@@ -1,17 +1,14 @@
-﻿using LearnWild.Services;
-using LearnWild.Services.Interfaces;
+﻿using LearnWild.Services.Interfaces;
 using LearnWild.Web.Infrastructure.Extensions;
 using LearnWild.Web.ViewModels.Course;
 using LearnWild.Web.ViewModels.Registration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using static LearnWild.Common.GeneralApplicationConstants.ApplicationRoles;
 
 
 namespace LearnWild.Web.Controllers
 {
-    [Authorize(Roles = $"{TeacherRoleName},{AdminRoleName}")]
+    [Authorize]
     public class RegistrationController : Controller
     {
         private readonly IRegistrationService _registrationService;
@@ -103,7 +100,7 @@ namespace LearnWild.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Mine()
         {
-            IEnumerable< RegistrationsViewModel> model = await _registrationService.GetRegistrationsByStudentIdAsync(User.GetId());
+            IEnumerable<RegistrationsViewModel> model = await _registrationService.GetRegistrationsByStudentIdAsync(User.GetId());
             return View(model);
         }
     }

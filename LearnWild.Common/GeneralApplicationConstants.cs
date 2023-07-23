@@ -7,5 +7,10 @@
             public const string TeacherRoleName = "Teacher";
             public const string AdminRoleName = "Admin";
         }
+
+        public static class PolicyNames
+        {
+            public const string TeacherOrAdmin = "TeacherOrAdmin";
+        }
     }
 }
