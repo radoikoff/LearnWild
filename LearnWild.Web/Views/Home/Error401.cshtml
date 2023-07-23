@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Unauthorized";
+}
+
+<div class="d-flex align-items-center justify-content-center" style="height: 75vh;">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold">401</h1>
+        <p class="fs-3"> <span class="text-danger">Opps!</span> Unauthorized!</p>
+        <p class="lead">
+            It looks like you do not have access to the page you are looking for!
+        </p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
