@@ -23,5 +23,7 @@
         public string Type { get; set; } = null!;
 
         public string Teacher { get; set; } = null!;
+
+        public bool IsPaid { get; set; }
     }
 }

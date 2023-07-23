@@ -26,13 +26,10 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="All">Courses</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Mine">My Courses</a>
-						</li>
-						@if (User.IsTeacher() || User.IsAdmin())
+						@if (User.Identity?.IsAuthenticated ?? false)
 						{
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Create">Create Course</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Mine">My Courses</a>
 							</li>
 						}
 					</ul>

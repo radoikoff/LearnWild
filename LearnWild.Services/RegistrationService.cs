@@ -36,6 +36,7 @@ namespace LearnWild.Services
                                                                 r.Course.End >= DateTime.UtcNow,
                                                     InFuture = r.Course.Active && r.Course.Start > DateTime.UtcNow,
                                                     Teacher = r.Course.Teacher.FirstName + ' ' + r.Course.Teacher.LastName,
+                                                    IsPaid = r.OrderId.HasValue
                                                 })
                                                 .ToArrayAsync();
             return registrations;

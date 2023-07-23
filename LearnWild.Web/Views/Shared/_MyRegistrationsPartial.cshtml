@@ -8,6 +8,14 @@
 		<div class="mb-2">
 			<span class="badge me-auto bg-success ">@Model.Category</span>
 			<span class="badge me-auto bg-success ">@Model.Type</span>
+			@if (Model.IsPaid)
+			{
+				<span class="badge me-auto bg-warning ">Paid</span>
+			}
+			else
+			{
+				<span class="badge me-auto bg-success ">Free</span>
+			}
 		</div>
 		<div class="d-flex align-content-start">
 			<h6 class="me-2">Start: <b>@Model.Start</b></h6>

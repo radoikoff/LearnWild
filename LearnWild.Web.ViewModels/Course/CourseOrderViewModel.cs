@@ -1,11 +1,13 @@
 ﻿namespace LearnWild.Web.ViewModels.Course
 {
-	public class CourseOrderViewModel
-	{
-		public string Title { get; set; } = null!;
+    public class CourseOrderViewModel
+    {
+        public string Id { get; set; } = null!;
 
-		public int Credits { get; set; }
+        public string Title { get; set; } = null!;
 
-		public decimal Price { get; set; }
-	}
+        public int Credits { get; set; }
+
+        public decimal Price { get; set; }
+    }
 }
