@@ -103,5 +103,19 @@ namespace LearnWild.Web.Controllers
             IEnumerable<RegistrationsViewModel> model = await _registrationService.GetRegistrationsByStudentIdAsync(User.GetId());
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Manage(string id)
+        {
+            if (!await _courseService.ExistsAsync(id))
+            {
+                return NotFound("Such course cannot be found!");
+            }
+
+            var model = await _courseService.GetStudentScoresAsync(id);
+
+            return View(model);
+        }
+
     }
 }

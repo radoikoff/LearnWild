@@ -3,9 +3,10 @@ using LearnWild.Web.ViewModels.Course;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LearnWild.Web.Infrastructure.Extensions;
-using static LearnWild.Common.GeneralApplicationConstants.ApplicationRoles;
-using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
 using LearnWild.Web.ViewModels.Event;
+using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
+using static LearnWild.Common.NotificationMessagesConstants;
+
 
 namespace LearnWild.Web.Controllers
 {

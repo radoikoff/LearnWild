@@ -22,6 +22,8 @@
 
         public string Type { get; set; } = null!;
 
+        public string TeacherId { get; set; } = null!;
+
         public string Teacher { get; set; } = null!;
 
         public IEnumerable<string> Topics { get; set; } = new HashSet<string>();

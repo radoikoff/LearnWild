@@ -105,6 +105,7 @@ namespace LearnWild.Services
                     End = c.End.ToString("dd-MMM-yyyy HH:mm"),
                     Active = c.Active,
                     Price = c.Price,
+                    TeacherId = c.TeacherId.ToString(),
                     Teacher = $"{c.Teacher.FirstName} {c.Teacher.LastName}",
                     Topics = c.Topics.Select(t => t.Title).ToArray()
                 })
@@ -146,6 +147,27 @@ namespace LearnWild.Services
                 .FirstAsync();
 
             return courseModel;
+        }
+
+        public async Task<CourseScoresViewModel> GetStudentScoresAsync(string courseId)
+        {
+            var model = await _context.Courses.Where(c => c.Id == Guid.Parse(courseId))
+                                        .Select(c => new CourseScoresViewModel()
+                                        {
+                                            CourseId = c.Id.ToString(),
+                                            Title = c.Title,
+                                            MaxCredits = c.MaxCredits,
+                                            Students = c.Registrations.Select(r => new StudentScoreViewModel()
+                                            {
+                                                Id = r.StudentId.ToString(),
+                                                FullName = r.Student.FirstName + " " + r.Student.LastName,
+                                                Credits = r.CreditsReceived,
+                                                Score = r.Score
+                                            })
+                                        })
+                                        .FirstOrDefaultAsync();
+
+            return model ?? new CourseScoresViewModel();
         }
 
         public async Task<UserSelectViewModel> GetTeacherAsync(string courseId)
