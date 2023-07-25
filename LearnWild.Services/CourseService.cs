@@ -3,6 +3,7 @@ using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Course;
 using LearnWild.Web.ViewModels.Event;
+using LearnWild.Web.ViewModels.Registration;
 using LearnWild.Web.ViewModels.User;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -149,7 +150,7 @@ namespace LearnWild.Services
             return courseModel;
         }
 
-        public async Task<CourseScoresViewModel> GetStudentScoresAsync(string courseId)
+        public async Task<CourseScoresViewModel> GetAllStudentsWithScoresAsync(string courseId)
         {
             var model = await _context.Courses.Where(c => c.Id == Guid.Parse(courseId))
                                         .Select(c => new CourseScoresViewModel()
@@ -194,6 +195,15 @@ namespace LearnWild.Services
                                                                    c.TeacherId.ToString() == teacherId &&
                                                                    c.Id.ToString() != currentCourseId);
             return hasOverlap;
+        }
+
+        public async Task<string> GetCourseTitleAsync(string courseId)
+        {
+            var name = await _context.Courses.Where(c => c.Id == Guid.Parse(courseId))
+                                             .Select(c => c.Title)
+                                             .FirstOrDefaultAsync();
+
+            return name ?? string.Empty;
         }
     }
 }

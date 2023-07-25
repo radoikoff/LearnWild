@@ -10,5 +10,6 @@ namespace LearnWild.Services.Interfaces
     public interface IUserService
     {
         Task<IEnumerable<UserSelectViewModel>> GetTeachersAsync();
-    }
+		Task<string> GetUserFullNameAsync(string userId);
+	}
 }

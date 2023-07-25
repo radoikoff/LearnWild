@@ -60,5 +60,11 @@
             public const int LastNameMinLength = 3;
             public const int LastNameMaxLength = 255;
         }
+
+        public static class CourseRegistration
+        {
+            public const decimal MinScore = 2.00m;
+            public const decimal MaxScore = 6.00m;
+        }
     }
 }

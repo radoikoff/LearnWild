@@ -4,6 +4,9 @@ using LearnWild.Web.ViewModels.Course;
 using LearnWild.Web.ViewModels.Registration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static LearnWild.Common.NotificationMessagesConstants;
+using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
+
 
 
 namespace LearnWild.Web.Controllers
@@ -105,6 +108,7 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = TeacherOrAdmin)]
         public async Task<IActionResult> Manage(string id)
         {
             if (!await _courseService.ExistsAsync(id))
@@ -112,9 +116,57 @@ namespace LearnWild.Web.Controllers
                 return NotFound("Such course cannot be found!");
             }
 
-            var model = await _courseService.GetStudentScoresAsync(id);
+            var model = await _courseService.GetAllStudentsWithScoresAsync(id);
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = TeacherOrAdmin)]
+        public async Task<IActionResult> EditScore(string courseId, string studentId)
+        {
+            if (!await _courseService.ExistsAsync(courseId))
+            {
+                TempData[ErrorMessage] = "Such course cannot be found!";
+                return RedirectToAction("All", "Course");
+            }
+
+            if (!await _registrationService.IsUserEnrolledAsync(studentId, courseId))
+            {
+                TempData[ErrorMessage] = "This student is not enrolled for this course!";
+                return RedirectToAction(nameof(Manage), "Registration", new { id = courseId });
+            }
+
+            var model = await _registrationService.GetStudentScoresAsync(studentId, courseId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = TeacherOrAdmin)]
+        public async Task<IActionResult> EditScore(StudentScoreFormModel model)
+        {
+            if (!await _courseService.ExistsAsync(model.CourseId))
+            {
+                ModelState.AddModelError(string.Empty, "Such course cannot be found!");
+            }
+
+            if (!await _registrationService.IsUserEnrolledAsync(model.StudentId, model.CourseId))
+            {
+                ModelState.AddModelError(string.Empty, "This student is not enrolled for this course!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var course = await _courseService.GetByIdAsync(model.CourseId);
+                model.CourseTitle = await _courseService.GetCourseTitleAsync(model.CourseId);
+                model.StudentFullName = await _userService.GetUserFullNameAsync(model.StudentId);
+                return View(model);
+            }
+
+            await _registrationService.EditStudentScoreAsync(model.StudentId, model.CourseId, model.Score, model.Credits);
+
+            return RedirectToAction(nameof(Manage), "Registration", new { id = model.CourseId });
         }
 
     }

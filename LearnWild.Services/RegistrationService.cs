@@ -16,6 +16,22 @@ namespace LearnWild.Services
             _dbContext = dbContext;
         }
 
+        public async Task EditStudentScoreAsync(string studentId, string courseId, decimal? score, int? credits)
+        {
+            var registration = await _dbContext.CourseRegistrations
+                .FirstOrDefaultAsync(r => r.StudentId == Guid.Parse(studentId) && r.CourseId == Guid.Parse(courseId));
+
+            if (registration == null)
+            {
+                throw new InvalidOperationException("Such registration does not exists!");
+            }
+
+            registration.Score = score;
+            registration.CreditsReceived = credits;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<RegistrationsViewModel>> GetRegistrationsByStudentIdAsync(string studentId)
         {
             var registrations = await _dbContext.CourseRegistrations
@@ -31,8 +47,8 @@ namespace LearnWild.Services
                                                     End = r.Course.End.ToString("dd-MMM-yyyy"),
                                                     CreditsReceived = r.CreditsReceived,
                                                     Score = r.Score,
-                                                    HasStarted = r.Course.Active && 
-                                                                r.Course.Start <= DateTime.UtcNow && 
+                                                    HasStarted = r.Course.Active &&
+                                                                r.Course.Start <= DateTime.UtcNow &&
                                                                 r.Course.End >= DateTime.UtcNow,
                                                     InFuture = r.Course.Active && r.Course.Start > DateTime.UtcNow,
                                                     Teacher = r.Course.Teacher.FirstName + ' ' + r.Course.Teacher.LastName,
@@ -40,6 +56,24 @@ namespace LearnWild.Services
                                                 })
                                                 .ToArrayAsync();
             return registrations;
+        }
+
+        public async Task<StudentScoreFormModel> GetStudentScoresAsync(string studentId, string courseId)
+        {
+            var model = await _dbContext.CourseRegistrations
+                .Where(cr => cr.StudentId == Guid.Parse(studentId) && cr.CourseId == Guid.Parse(courseId))
+                .Select(r => new StudentScoreFormModel()
+                {
+                    CourseId = r.CourseId.ToString(),
+                    StudentId = r.StudentId.ToString(),
+                    Credits = r.CreditsReceived,
+                    CourseMaxCredits = r.Course.MaxCredits,
+                    Score = r.Score,
+                    StudentFullName = r.Student.FirstName + " " + r.Student.LastName,
+                    CourseTitle = r.Course.Title,
+                })
+                .FirstOrDefaultAsync();
+            return model ?? new StudentScoreFormModel();
         }
 
         public async Task<bool> IsUserEnrolledAsync(string studentId, string courseId)

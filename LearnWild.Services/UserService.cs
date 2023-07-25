@@ -3,6 +3,7 @@ using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearnWild.Services
 {
@@ -26,6 +27,18 @@ namespace LearnWild.Services
                 Id = t.Id.ToString(),
                 Name = t.UserName,
             });
+        }
+
+        public async Task<string> GetUserFullNameAsync(string userId)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(c => c.Id == Guid.Parse(userId));
+
+            if (user == null)
+            {
+                return string.Empty;
+            }
+
+            return user.FirstName + " " + user.LastName;
         }
     }
 }

@@ -47,6 +47,7 @@ namespace LearnWild.Web
                 .AddMvcOptions(options =>
                 {
                     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
                 });
 
             var app = builder.Build();

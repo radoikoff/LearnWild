@@ -1,0 +1,44 @@
+﻿@model StudentScoreFormModel
+
+@{
+	ViewData["Title"] = "Edit Score";
+}
+
+<h3 class="text-center">@ViewData["Title"]</h3>
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<div class="d-flex justify-content-evenly">
+			<h6>Student: <b>@Model.StudentFullName</b></h6>
+			<h6>Course: <b>@Model.CourseTitle</b></h6>
+			<h6>Max Credits: <b>@Model.CourseMaxCredits</b></h6>
+		</div>
+	</div>
+</div>
+
+<hr />
+
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+
+		<div asp-validation-summary="ModelOnly" class="small text-danger"></div>
+		<form asp-controller="Registration" asp-action="EditScore" class="row g-3">
+			<input type="hidden" asp-for="CourseId" />
+			<input type="hidden" asp-for="StudentId" />
+			<input type="hidden" asp-for="CourseMaxCredits" />
+			<div class="form-group col-md-6">
+				<label asp-for="Score"></label>
+				<input asp-for="Score" class="form-control">
+				<span asp-validation-for="Score" class="small text-danger"></span>
+			</div>
+			<div class="form-group col-md-6">
+				<label asp-for="Credits"></label>
+				<input asp-for="Credits" class="form-control">
+				<span asp-validation-for="Credits" class="small text-danger"></span>
+			</div>
+			<div class="text-center mt-2">
+				<button class="btn btn-success" />Save</button>
+				<a asp-controller="Registration" asp-action="Manage" asp-route-id=@Model.CourseId class="btn btn-outline-secondary">Back</a>
+			</div>
+		</form>
+	</div>
+</div>
