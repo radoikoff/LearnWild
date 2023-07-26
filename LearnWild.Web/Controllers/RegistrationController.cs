@@ -96,7 +96,7 @@ namespace LearnWild.Web.Controllers
 
             await _registrationService.RegisterAsync(model.StudentId, model.CourseId);
 
-            //TODO: Raise success notification
+            TempData[SuccessMessage] = "You have been successfuly enrolled!";
             return RedirectToAction(nameof(Mine));
         }
 
@@ -166,7 +166,35 @@ namespace LearnWild.Web.Controllers
 
             await _registrationService.EditStudentScoreAsync(model.StudentId, model.CourseId, model.Score, model.Credits);
 
+            TempData[SuccessMessage] = "Student marks successfuly updated!";
             return RedirectToAction(nameof(Manage), "Registration", new { id = model.CourseId });
+        }
+
+        [HttpPost]
+        [Authorize(Policy = TeacherOrAdmin)]
+        public async Task<IActionResult> Remove(string courseId, string studentId)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = ModelState.Values.SelectMany(v => string.Join(",", v.Errors));
+            }
+
+            if (!await _courseService.ExistsAsync(courseId))
+            {
+                TempData[ErrorMessage] = "Such course cannot be found!";
+                return RedirectToAction(nameof(Manage), "Registration", new { id = courseId });
+            }
+
+            if (!await _registrationService.IsUserEnrolledAsync(studentId, courseId))
+            {
+                TempData[ErrorMessage] = "This student is not enrolled for this course!";
+                return RedirectToAction(nameof(Manage), "Registration", new { id = courseId });
+            }
+
+            await _registrationService.RemoveStudentFromCourseAsync(studentId, courseId);
+
+            TempData[SuccessMessage] = "Student successfuly removed!";
+            return RedirectToAction(nameof(Manage), "Registration", new { id = courseId });
         }
 
     }

@@ -7,7 +7,7 @@ namespace LearnWild.Web.Infrastructure.Extensions
     {
         public static string GetId(this ClaimsPrincipal user)
         {
-            return user.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            return user.FindFirstValue(ClaimTypes.NameIdentifier)?.ToUpperInvariant() ?? string.Empty;
         }
 
         public static bool IsTeacher(this ClaimsPrincipal user)

@@ -13,7 +13,7 @@
             public const string MinDate = "2022/01/01";
             public const string MaxDate = "2050/01/01";
 
-            public const int MinCredit = 1;
+            public const int MinCredit = 0;
             public const int MaxCredit = 100;
 
             public const string MinPrice = "1";

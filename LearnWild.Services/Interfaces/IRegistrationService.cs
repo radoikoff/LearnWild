@@ -9,5 +9,6 @@ namespace LearnWild.Services.Interfaces
 		Task<StudentScoreFormModel> GetStudentScoresAsync(string studentId, string courseId);
 		Task<bool> IsUserEnrolledAsync(string studentId, string courseId);
         Task RegisterAsync(string requestorId, string courseId);
+        Task RemoveStudentFromCourseAsync(string studentId, string courseId);
     }
 }

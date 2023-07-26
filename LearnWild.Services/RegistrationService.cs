@@ -97,5 +97,19 @@ namespace LearnWild.Services
             _dbContext.CourseRegistrations.Add(registration);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task RemoveStudentFromCourseAsync(string studentId, string courseId)
+        {
+            var registration = await _dbContext.CourseRegistrations
+                .FirstOrDefaultAsync(r => r.CourseId == Guid.Parse(courseId) && r.StudentId == Guid.Parse(studentId));
+
+            if (registration == null)
+            {
+                throw new InvalidOperationException("Registration not found!");
+            }
+
+            _dbContext.CourseRegistrations.Remove(registration);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
