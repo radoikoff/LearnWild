@@ -70,9 +70,44 @@ namespace LearnWild.Services
 
         public async Task<bool> ExistsAsync(string id) => await _context.Courses.AnyAsync(c => c.Id == Guid.Parse(id));
 
-        public async Task<IEnumerable<CourseAllViewModel>> GetAllAsync()
+        public async Task<IEnumerable<CourseAllViewModel>> GetAllAsync(CourseSearchModel searchModel)
         {
-            var courses = await _context.Courses
+            var coursesQuery = _context.Courses.AsQueryable();
+
+            if (searchModel.SelectedCategories != null)
+            {
+                coursesQuery = coursesQuery.Where(c => searchModel.SelectedCategories.Contains(c.CategoryId));
+            }
+
+            if (searchModel.SelectedTypes != null)
+            {
+                coursesQuery = coursesQuery.Where(c => searchModel.SelectedTypes.Contains(c.TypeId));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchModel.SearchString))
+            {
+                string pattern = $"%{searchModel.SearchString.ToLower()}%";
+
+                coursesQuery = coursesQuery.Where(c => EF.Functions.Like(c.Title, pattern) ||
+                                                       EF.Functions.Like(c.Description, pattern));
+            }
+
+            if (searchModel.Active == true)
+            {
+                coursesQuery = coursesQuery.Where(c => c.Active == true);
+            }
+
+            if (searchModel.MinPrice.HasValue)
+            {
+                coursesQuery = coursesQuery.Where(c => c.Price >= searchModel.MinPrice);
+            }
+
+            if (searchModel.MaxPrice.HasValue)
+            {
+                coursesQuery = coursesQuery.Where(c => c.Price <= searchModel.MaxPrice);
+            }
+
+            var courses = await coursesQuery
                                         .Where(c => c.Deleted == false)
                                         .Select(c => new CourseAllViewModel
                                         {

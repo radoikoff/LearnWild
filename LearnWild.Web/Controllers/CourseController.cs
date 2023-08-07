@@ -7,7 +7,6 @@ using LearnWild.Web.ViewModels.Event;
 using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
 using static LearnWild.Common.NotificationMessagesConstants;
 
-
 namespace LearnWild.Web.Controllers
 {
     [Authorize(Policy = TeacherOrAdmin)]
@@ -37,10 +36,24 @@ namespace LearnWild.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(CourseSearchModel model)
         {
-            IEnumerable<CourseAllViewModel> courses = await _courseService.GetAllAsync();
-            return View(courses);
+            model.Courses = await _courseService.GetAllAsync(model);
+            model.Categories = await _categoryService.AllCategoriesAsync();
+            model.Types = await _typeService.AllTypesAsync();
+
+            foreach (var category in model.Categories)
+            {
+                category.Selected = model.SelectedCategories?.Contains(category.Id) ?? false;
+            }
+
+            foreach (var type in model.Types)
+            {
+                type.Selected = model.SelectedTypes?.Contains(type.Id) ?? false;
+            }
+
+
+            return View(model);
         }
 
         [HttpGet]

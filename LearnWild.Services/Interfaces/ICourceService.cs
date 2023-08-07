@@ -9,7 +9,7 @@ namespace LearnWild.Services.Interfaces
         Task CreateCourseAsync(CourseFormModel inputModel, string creatorId);
         Task EditCourseAsync(CourseFormModel inputModel, string id);
         Task<bool> ExistsAsync(string id);
-        Task<IEnumerable<CourseAllViewModel>> GetAllAsync();
+        Task<IEnumerable<CourseAllViewModel>> GetAllAsync(CourseSearchModel searchModel);
         Task<CourseDetailsViewModel?> GetByIdAsync(string id);
         Task<IEnumerable<EventCalendarViewModel>> GetCalendarData();
         Task<CourseFormModel> GetForEditByIdAsync(string id);

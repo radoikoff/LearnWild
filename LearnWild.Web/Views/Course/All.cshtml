@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CourseAllViewModel>
+﻿@model CourseSearchModel
 @using LearnWild.Web.Infrastructure.Extensions;
 
 <div class="container">
@@ -11,17 +11,82 @@
 			<a asp-controller="Course" asp-action="Calendar" class="btn btn-outline-success">Switch to calendar</a>
 		</div>
 	</div>
-
-	@if (!Model.Any())
-	{
-		<h2 class="text-center">No courses found by the given criteria!</h2>
-	}
-
 	<div class="row">
-		@foreach (var course in Model)
-		{
-			<partial name="_CoursePartial" model="@course" />
 
-		}
+
+		<div class="col-md-3">
+			<div class="card rounded-3 shadow-sm p-3">
+				<form method="get">
+					<div class="form-group">
+						<label asp-for="SearchString"></label>
+						<input asp-for="SearchString" class="form-control">
+					</div>
+					<div class="form-group mt-3">
+						<label class="mb-1">Category</label>
+						@foreach (var category in Model.Categories)
+						{
+							<div class="form-check">
+								<input class="form-check-input" name="SelectedCategories" value="@category.Id" type="checkbox" @(category.Selected ? "checked" : string.Empty)>
+								<label class="form-check-label" asp-for="SelectedCategories">@category.Name</label>
+							</div>
+						}
+					</div>
+					<div class="form-group mt-3">
+						<label class="mb-1">Type</label>
+						@foreach (var type in Model.Types)
+						{
+							<div class="form-check">
+								<input class="form-check-input" name="selectedtypes" value="@type.Id" type="checkbox" checked=@(type.Selected == true)>
+								<label class="form-check-label" asp-for="SelectedTypes">@type.Name</label>
+							</div>
+						}
+					</div>
+					<div class="row mt-3">
+						<label class="mb-1">Price</label>
+						<div class="col-6">
+							<label asp-for="MinPrice"></label>
+							<input class="form-control" asp-for=MinPrice>
+						</div>
+						<div class="col-6">
+							<label asp-for="MaxPrice"></label>
+							<input class="form-control" asp-for=MaxPrice>
+						</div>
+					</div>
+					<div class="form-group mt-3">
+						<label class="mb-1">Status</label>
+						<div class="form-check">
+							<input class="form-check-input" asp-for=Active type="checkbox">
+							<label class="form-check-label" asp-for="Active"></label>
+						</div>
+					</div>
+					<div class="form-group mt-3">
+						<button type="submit" class="btn btn-primary">Search</button>
+						<button type="button" class="btn btn-outline-secondary" id="clear-search">Clear</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="row">
+				@foreach (var course in Model.Courses)
+				{
+					<partial name="_CoursePartial" model="@course" />
+				}
+				@if (!Model.Courses.Any())
+				{
+					<h6 class="text-center">No courses found by the given criteria!</h6>
+				}
+			</div>
+		</div>
 	</div>
 </div>
+
+@section Scripts
+	{
+	<script>
+		document.getElementById('clear-search').addEventListener('click', (event) => {
+			document.querySelectorAll('input[type=checkbox]').forEach(i => i.checked = false);
+			document.querySelectorAll('input[type=text]').forEach(i => i.value = '');
+		})
+	</script>
+}
