@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static LearnWild.Common.NotificationMessagesConstants;
 using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
+using LearnWild.Services;
 
 
 namespace LearnWild.Web.Controllers
@@ -21,22 +22,22 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string id) => RedirectToAction(nameof(All), id);
+        public IActionResult Index(string courseId) => RedirectToAction(nameof(All), courseId);
 
         [HttpGet]
-        public async Task<IActionResult> All(string id)
+        public async Task<IActionResult> All(string courseId)
         {
-            ViewBag.CourseId = id;
-            var topics = await _topicService.GetAllTopicsForCourseAsync(id);
+            ViewBag.CourseId = courseId;
+            var topics = await _topicService.GetAllTopicsForCourseAsync(courseId);
             return View(topics);
         }
 
         [HttpGet]
-        public IActionResult Create(string id)
+        public IActionResult Create(string courseId)
         {
             var model = new TopicFormModel()
             {
-                CourseId = id
+                CourseId = courseId
             };
             return View(model);
         }
@@ -62,7 +63,46 @@ namespace LearnWild.Web.Controllers
             await _topicService.CreateTopicAsync(model);
 
             TempData[SuccessMessage] = "Successfuly created topic!";
-            return RedirectToAction(nameof(All), new { id = model.CourseId });
+            return RedirectToAction(nameof(All), new { courseId = model.CourseId });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (!await _topicService.ExistsAsync(id))
+            {
+                return NotFound("Such topic cannot be found");
+            }
+
+            var model = await _topicService.GetByIdForEditAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(TopicFormModel inputModel, string id)
+        {
+            if (!await _topicService.ExistsAsync(id))
+            {
+                return NotFound("Such topic cannot be found");
+            }
+
+            if (await _topicService.ExistsAsync(inputModel.CourseId, inputModel.Title, id))
+            {
+                ModelState.AddModelError(nameof(inputModel.Title), "Topic with the same title already exisits!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(inputModel);
+            }
+
+            await _topicService.EditTopicAsync(inputModel, id);
+
+            TempData[SuccessMessage] = "Successfuly edited topic!";
+            return RedirectToAction(nameof(All), new { courseId = inputModel.CourseId });
+        }
+
+
     }
 }

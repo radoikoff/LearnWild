@@ -33,9 +33,35 @@ namespace LearnWild.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> ExistsAsync(string courseId, string title)
+        public async Task EditTopicAsync(TopicFormModel inputModel, string id)
         {
-            return await _dbContext.Topics.AnyAsync(t => t.CourseId == Guid.Parse(courseId) && t.Title == title);
+            var topic = await _dbContext.Topics.FindAsync(Guid.Parse(id));
+
+            if (topic == null)
+            {
+                throw new InvalidOperationException("Such topic cannot be found!");
+            }
+
+            topic.Title = inputModel.Title;
+            topic.Description = inputModel.Description;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistsAsync(string courseId, string title, string? topicId = null)
+        {
+            if (topicId == null)
+            {
+                return await _dbContext.Topics.AnyAsync(t => t.CourseId == Guid.Parse(courseId) && t.Title == title);
+            }
+            return await _dbContext.Topics.AnyAsync(t => t.CourseId == Guid.Parse(courseId) &&
+                                                    t.Title == title &&
+                                                    t.Id != Guid.Parse(topicId));
+        }
+
+        public async Task<bool> ExistsAsync(string id)
+        {
+            return await _dbContext.Topics.AnyAsync(t => t.Id == Guid.Parse(id));
         }
 
         public async Task<IEnumerable<AllTopicsViewModel>> GetAllTopicsForCourseAsync(string courseId)
@@ -52,6 +78,18 @@ namespace LearnWild.Services
                                          })
                                          .ToArrayAsync();
             return topics;
+        }
+
+        public async Task<TopicFormModel?> GetByIdForEditAsync(string id)
+        {
+            return await _dbContext.Topics.Where(t => t.Id == Guid.Parse(id))
+                                .Select(t => new TopicFormModel()
+                                {
+                                    Title = t.Title,
+                                    Description = t.Description,
+                                    CourseId = t.CourseId.ToString(),
+                                })
+                                .FirstOrDefaultAsync();
         }
     }
 }

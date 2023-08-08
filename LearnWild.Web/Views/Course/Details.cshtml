@@ -52,7 +52,7 @@
             
             @if (this.User.Identity?.IsAuthenticated ?? false && (User.GetId() == Model.TeacherId || User.IsAdmin()))
             {
-                <a class="btn btn-warning" asp-controller="Topic" asp-action="All" asp-route-id="@Model.Id">Edit Topics</a>
+                <a class="btn btn-warning" asp-controller="Topic" asp-action="All" asp-route-courseId="@Model.Id">Edit Topics</a>
             }
         </div>
     </div>

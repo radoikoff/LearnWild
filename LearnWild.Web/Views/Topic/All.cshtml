@@ -29,20 +29,21 @@
 					{
 						<tr>
 							<td>@topic.Title</td>
-							<td class="text-center">@topic.Description</td>
+							<td>@topic.Description</td>
 							<td class="text-center">@topic.ResourceCount</td>
 							<td>
 								<a asp-controller="Topic" asp-action="Edit" asp-route-id=@topic.Id class="btn btn-success btn-sm">
-									Edit Score
+									Edit
 								</a>
 								<button type="button"
-								class="btn btn-danger btn-sm"
-								data-bs-toggle="modal"
-								data-bs-target="#confirmDeleteModal"
-								data-bs-topic-id="topic.CourseId"
-								data-bs-student-id="@topic.Id"
-								data-bs-student-name="@topic.Title">
-									Unregister
+									class="btn btn-danger btn-sm"
+									data-bs-toggle="modal"
+									data-bs-target="#confirmDeleteModal"
+									data-bs-topic-id="topic.CourseId"
+									data-bs-student-id="@topic.Id"
+									data-bs-student-name="@topic.Title"
+								>
+									Delete
 								</button>
 
 							</td>
@@ -56,7 +57,7 @@
 			<p class="text-center mb-4">No topics yet!</p>
 		}
 		<div class="mt-3">
-			<a asp-controller="Topic" asp-action="Create" asp-route-id=@ViewBag.CourseId class="btn btn-success">Add Topic</a>
+			<a asp-controller="Topic" asp-action="Create" asp-route-courseId=@ViewBag.CourseId class="btn btn-success">Add Topic</a>
 			<a asp-controller="Course" asp-action="Details" asp-route-id=@ViewBag.CourseId class="btn btn-outline-secondary">Back to course</a>
 		</div>
 	</div>
