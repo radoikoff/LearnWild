@@ -1,0 +1,63 @@
+﻿@model IEnumerable<AllTopicsViewModel>
+
+@{
+	ViewBag.Title = "Topics Management";
+}
+
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-2 col-xl-8">
+		<h2 class="text-center">@ViewBag.Title</h2>
+		<hr />
+
+		@*		<div class="d-inline-flex mb-3">
+		<p class="mb-0">Course: <b>@Model.Title</b></p>
+		</div>*@
+
+		@if (Model.Any())
+		{
+			<table class="table table-hoover">
+				<thead>
+					<tr>
+						<th>Topic Title</th>
+						<th>Description</th>
+						<th class="text-center">Resourses count</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var topic in Model)
+					{
+						<tr>
+							<td>@topic.Title</td>
+							<td class="text-center">@topic.Description</td>
+							<td class="text-center">@topic.ResourceCount</td>
+							<td>
+								<a asp-controller="Topic" asp-action="Edit" asp-route-id=@topic.Id class="btn btn-success btn-sm">
+									Edit Score
+								</a>
+								<button type="button"
+								class="btn btn-danger btn-sm"
+								data-bs-toggle="modal"
+								data-bs-target="#confirmDeleteModal"
+								data-bs-topic-id="topic.CourseId"
+								data-bs-student-id="@topic.Id"
+								data-bs-student-name="@topic.Title">
+									Unregister
+								</button>
+
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p class="text-center mb-4">No topics yet!</p>
+		}
+		<div class="mt-3">
+			<a asp-controller="Course" asp-action="Details" asp-route-id=@ViewBag.CourseId class="btn btn-outline-secondary">Back to course</a>
+		</div>
+	</div>
+</div>
+
