@@ -1,6 +1,8 @@
 ﻿using LearnWild.Services.Interfaces;
+using LearnWild.Web.ViewModels.Topic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static LearnWild.Common.NotificationMessagesConstants;
 using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
 
 
@@ -10,10 +12,12 @@ namespace LearnWild.Web.Controllers
     public class TopicController : Controller
     {
         private readonly ITopicService _topicService;
+        private readonly ICourceService _courseService;
 
-        public TopicController(ITopicService topicService)
+        public TopicController(ITopicService topicService, ICourceService courseService)
         {
             _topicService = topicService;
+            _courseService = courseService;
         }
 
         [HttpGet]
@@ -28,10 +32,37 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> Add(string id)
+        public IActionResult Create(string id)
         {
+            var model = new TopicFormModel()
+            {
+                CourseId = id
+            };
+            return View(model);
+        }
 
-            return View();
+        [HttpPost]
+        public async Task<IActionResult> Create(TopicFormModel model)
+        {
+            if (!await _courseService.ExistsAsync(model.CourseId))
+            {
+                ModelState.AddModelError(string.Empty, "Such course does not exists!");
+            }
+
+            if (await _topicService.ExistsAsync(model.CourseId, model.Title))
+            {
+                ModelState.AddModelError(nameof(model.Title), "Topic with the same title already exisits!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _topicService.CreateTopicAsync(model);
+
+            TempData[SuccessMessage] = "Successfuly created topic!";
+            return RedirectToAction(nameof(All), new { id = model.CourseId });
         }
     }
 }

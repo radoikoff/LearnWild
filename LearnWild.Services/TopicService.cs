@@ -1,4 +1,5 @@
 ﻿using LearnWild.Data;
+using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Topic;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,24 @@ namespace LearnWild.Services
             _dbContext = dbContext;
         }
 
+        public async Task CreateTopicAsync(TopicFormModel model)
+        {
+            var topic = new Topic()
+            {
+                CourseId = Guid.Parse(model.CourseId),
+                Title = model.Title,
+                Description = model.Description,
+            };
+
+            _dbContext.Topics.Add(topic);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistsAsync(string courseId, string title)
+        {
+            return await _dbContext.Topics.AnyAsync(t => t.CourseId == Guid.Parse(courseId) && t.Title == title);
+        }
+
         public async Task<IEnumerable<AllTopicsViewModel>> GetAllTopicsForCourseAsync(string courseId)
         {
             var topics = await _dbContext.Topics
@@ -27,7 +46,7 @@ namespace LearnWild.Services
                                          {
                                              Id = t.Id.ToString(),
                                              CourseId = t.CourseId.ToString(),
-                                             Title = t.Title, 
+                                             Title = t.Title,
                                              Description = t.Description,
                                              ResourceCount = t.Resources.Count()
                                          })
