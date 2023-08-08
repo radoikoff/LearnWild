@@ -4,6 +4,7 @@ using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Course;
 using LearnWild.Web.ViewModels.Event;
 using LearnWild.Web.ViewModels.Registration;
+using LearnWild.Web.ViewModels.Topic;
 using LearnWild.Web.ViewModels.User;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -143,7 +144,12 @@ namespace LearnWild.Services
                     Price = c.Price,
                     TeacherId = c.TeacherId.ToString(),
                     Teacher = $"{c.Teacher.FirstName} {c.Teacher.LastName}",
-                    Topics = c.Topics.Select(t => t.Title).ToArray()
+                    Topics = c.Topics.Select(t => new TopicViewModel
+                    {
+                        Id = t.Id.ToString(),
+                        Title = t.Title,
+                        Description = t.Description
+                    }).ToArray()
                 })
                 .FirstOrDefaultAsync();
             return course;

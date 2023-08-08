@@ -1,4 +1,6 @@
-﻿namespace LearnWild.Web.ViewModels.Course
+﻿using LearnWild.Web.ViewModels.Topic;
+
+namespace LearnWild.Web.ViewModels.Course
 {
     public class CourseDetailsViewModel
     {
@@ -26,6 +28,6 @@
 
         public string Teacher { get; set; } = null!;
 
-        public IEnumerable<string> Topics { get; set; } = new HashSet<string>();
+        public IEnumerable<TopicViewModel> Topics { get; set; } = new HashSet<TopicViewModel>();
     }
 }
