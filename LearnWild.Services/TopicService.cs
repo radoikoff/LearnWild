@@ -3,11 +3,6 @@ using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Topic;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LearnWild.Services
 {
@@ -30,6 +25,19 @@ namespace LearnWild.Services
             };
 
             _dbContext.Topics.Add(topic);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteTopicAsync(string topicId)
+        {
+            var topicToDelete = await _dbContext.Topics.FindAsync(Guid.Parse(topicId));
+
+            if (topicToDelete == null)
+            {
+                throw new InvalidOperationException("Such topic cannot be found!");
+            }
+
+            _dbContext.Topics.Remove(topicToDelete);
             await _dbContext.SaveChangesAsync();
         }
 

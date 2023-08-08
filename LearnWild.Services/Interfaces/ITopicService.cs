@@ -5,6 +5,7 @@ namespace LearnWild.Services.Interfaces
     public interface ITopicService
     {
         Task CreateTopicAsync(TopicFormModel model);
+        Task DeleteTopicAsync(string topicId);
         Task EditTopicAsync(TopicFormModel inputModel, string id);
         Task<bool> ExistsAsync(string courseId, string title, string? topicId = null);
         Task<bool> ExistsAsync(string id);

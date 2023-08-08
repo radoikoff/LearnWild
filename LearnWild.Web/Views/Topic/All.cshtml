@@ -9,9 +9,9 @@
 		<h2 class="text-center">@ViewBag.Title</h2>
 		<hr />
 
-		@*		<div class="d-inline-flex mb-3">
-		<p class="mb-0">Course: <b>@Model.Title</b></p>
-		</div>*@
+		<div class="d-inline-flex mb-3">
+			<p class="mb-0">Course: <b>@ViewBag?.CourseTitle</b></p>
+		</div>
 
 		@if (Model.Any())
 		{
@@ -36,13 +36,12 @@
 									Edit
 								</a>
 								<button type="button"
-									class="btn btn-danger btn-sm"
-									data-bs-toggle="modal"
-									data-bs-target="#confirmDeleteModal"
-									data-bs-topic-id="topic.CourseId"
-									data-bs-student-id="@topic.Id"
-									data-bs-student-name="@topic.Title"
-								>
+								class="btn btn-danger btn-sm"
+								data-bs-toggle="modal"
+								data-bs-target="#confirmDeleteTopicModal"
+								data-bs-topic-id="@topic.Id"
+								data-bs-course-id="@topic.CourseId"
+								data-bs-topic-title="@topic.Title">
 									Delete
 								</button>
 
@@ -62,4 +61,44 @@
 		</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteTopicModal" tabindex="-1" aria-labelledby="confirmDeleteTopicModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="confirmDeleteModalTopicLabel">Are you sure?</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form asp-controller="Topic" asp-action="Delete">
+					<input type="text" id="modal-input-topic-id" name="topicId" hidden>
+					<input type="text" id="modal-input-course-id" name="courseId" hidden>
+					<div class="text-center">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button class="btn btn-outline-danger">Remove</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@section Scripts
+	{
+	<script>
+		const modal = document.getElementById('confirmDeleteTopicModal');
+		modal.addEventListener('show.bs.modal', function (event) {
+			const button = event.relatedTarget
+			const topicId = button.getAttribute('data-bs-topic-id');
+			const courseId = button.getAttribute('data-bs-course-id');
+			const topicTitle = button.getAttribute('data-bs-topic-title');
+
+			modal.querySelector('#confirmDeleteModalTopicLabel').textContent = 'Are you sure you want to remove "' + topicTitle + '" ?';
+			modal.querySelector('#modal-input-topic-id').value = topicId;
+			modal.querySelector('#modal-input-course-id').value = courseId;
+		});
+
+	</script>
+}
 

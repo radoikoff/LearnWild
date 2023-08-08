@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static LearnWild.Common.NotificationMessagesConstants;
 using static LearnWild.Common.GeneralApplicationConstants.PolicyNames;
-using LearnWild.Services;
 
 
 namespace LearnWild.Web.Controllers
@@ -28,6 +27,7 @@ namespace LearnWild.Web.Controllers
         public async Task<IActionResult> All(string courseId)
         {
             ViewBag.CourseId = courseId;
+            ViewBag.CourseTitle = await _courseService.GetCourseTitleAsync(courseId);
             var topics = await _topicService.GetAllTopicsForCourseAsync(courseId);
             return View(topics);
         }
@@ -84,7 +84,8 @@ namespace LearnWild.Web.Controllers
         {
             if (!await _topicService.ExistsAsync(id))
             {
-                return NotFound("Such topic cannot be found");
+                TempData[ErrorMessage] = "Such topic cannot be found!";
+                return RedirectToAction(nameof(Edit), new { id });
             }
 
             if (await _topicService.ExistsAsync(inputModel.CourseId, inputModel.Title, id))
@@ -101,6 +102,21 @@ namespace LearnWild.Web.Controllers
 
             TempData[SuccessMessage] = "Successfuly edited topic!";
             return RedirectToAction(nameof(All), new { courseId = inputModel.CourseId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string topicId, string courseId)
+        {
+            if (!await _topicService.ExistsAsync(topicId))
+            {
+                TempData[ErrorMessage] = "Such topic cannot be found!";
+                return RedirectToAction(nameof(All), new { courseId });
+            }
+
+            await _topicService.DeleteTopicAsync(topicId);
+
+            TempData[SuccessMessage] = "Topic successfuly deleted!";
+            return RedirectToAction(nameof(All), new { courseId });
         }
 
 
