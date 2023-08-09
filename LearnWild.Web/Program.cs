@@ -44,6 +44,13 @@ namespace LearnWild.Web
                     policy.RequireRole(ApplicationRoles.TeacherRoleName, ApplicationRoles.AdminRoleName));
             });
 
+            builder.Services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = "/User/Login";
+                config.AccessDeniedPath = "/Home/Error/401";
+                config.Cookie.HttpOnly = true;
+            });
+
             builder.Services.AddControllersWithViews()
                 .AddMvcOptions(options =>
                 {

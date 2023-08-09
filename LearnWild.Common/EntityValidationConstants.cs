@@ -59,6 +59,9 @@
 
             public const int LastNameMinLength = 3;
             public const int LastNameMaxLength = 255;
+
+            public const int PasswordMinLength = 6;
+            public const int PasswordMaxLength = 64;
         }
 
         public static class CourseRegistration

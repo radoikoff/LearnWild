@@ -19,5 +19,10 @@ namespace LearnWild.Web.Infrastructure.Extensions
         {
             return user.IsInRole(AdminRoleName);
         }
+
+        public static string GetUserFirstName(this ClaimsPrincipal user)
+        {
+            return user.FindFirstValue(ClaimTypes.GivenName) ?? string.Empty;
+        }
     }
 }
