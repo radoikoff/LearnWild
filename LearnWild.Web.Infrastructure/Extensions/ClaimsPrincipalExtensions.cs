@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using static LearnWild.Common.GeneralApplicationConstants.ApplicationRoles;
+using static LearnWild.Common.GeneralApplicationConstants;
 
 namespace LearnWild.Web.Infrastructure.Extensions
 {
@@ -20,9 +21,14 @@ namespace LearnWild.Web.Infrastructure.Extensions
             return user.IsInRole(AdminRoleName);
         }
 
-        public static string GetUserFirstName(this ClaimsPrincipal user)
+        public static string GetFirstName(this ClaimsPrincipal user)
         {
-            return user.FindFirstValue(ClaimTypes.GivenName) ?? string.Empty;
+            return user.FindFirstValue(AppClaimTypes.FirstName) ?? string.Empty;
+        }
+
+        public static string GetLastName(this ClaimsPrincipal user)
+        {
+            return user.FindFirstValue(AppClaimTypes.LastName) ?? string.Empty;
         }
     }
 }

@@ -42,8 +42,8 @@ namespace LearnWild.Web.Controllers
             {
                 CourseId = id,
                 StudentId = User.GetId(),
-                FirstName = "Petar", //TODO: Add real user here
-                LastName = "Petrov",
+                FirstName = User.GetFirstName(),
+                LastName = User.GetLastName(),
                 CourseTitle = courseModel!.Title,
                 CourseStart = courseModel!.Start,
                 CourseEnd = courseModel!.End
@@ -85,8 +85,8 @@ namespace LearnWild.Web.Controllers
             {
                 var courseModel = await _courseService.GetByIdAsync(model.CourseId);
 
-                model.FirstName = "Petar"; //TODO: Add real user here
-                model.LastName = "Petrov";
+                model.FirstName = User.GetFirstName();
+                model.LastName = User.GetLastName();
                 model.CourseTitle = courseModel!.Title;
                 model.CourseStart = courseModel!.Start;
                 model.CourseEnd = courseModel!.End;

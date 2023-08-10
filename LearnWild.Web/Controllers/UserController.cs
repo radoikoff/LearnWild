@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static LearnWild.Common.GeneralApplicationConstants;
 
 namespace LearnWild.Web.Controllers
 {
@@ -55,7 +56,11 @@ namespace LearnWild.Web.Controllers
                 return View(model);
             }
 
-            var customClaims = new[] { new Claim(ClaimTypes.GivenName, userCandidate.FirstName ?? string.Empty) };
+            var customClaims = new[] 
+            {
+                new Claim(AppClaimTypes.FirstName, userCandidate.FirstName ?? string.Empty),
+                new Claim(AppClaimTypes.LastName, userCandidate.LastName ?? string.Empty),
+            };
 
             await _signInManager.SignInWithClaimsAsync(userCandidate, true, customClaims);
 
@@ -102,7 +107,11 @@ namespace LearnWild.Web.Controllers
                 return View(model);
             }
 
-            var customClaims = new[] { new Claim(ClaimTypes.GivenName, user.FirstName) };
+            var customClaims = new[]
+{
+                new Claim(AppClaimTypes.FirstName, user.FirstName ?? string.Empty),
+                new Claim(AppClaimTypes.LastName, user.LastName ?? string.Empty),
+            };
 
             await _signInManager.SignInWithClaimsAsync(user, true, customClaims);
             return LocalRedirect(model.ReturnUrl ?? "/Course/All");
