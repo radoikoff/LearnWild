@@ -9,7 +9,7 @@ using static LearnWild.Common.NotificationMessagesConstants;
 
 namespace LearnWild.Web.Controllers
 {
-    [Authorize(Policy = TeacherOrAdmin)]
+    [Authorize]
     public class CourseController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -57,6 +57,7 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = TeacherOrAdmin)]
         public async Task<IActionResult> Create()
         {
             var model = new CourseFormModel()
@@ -70,6 +71,7 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = TeacherOrAdmin)]
         public async Task<IActionResult> Create(CourseFormModel inputModel)
         {
             if (!ModelState.IsValid)
@@ -114,6 +116,7 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = TeacherOrAdmin)]
         public async Task<IActionResult> Edit(string id)
         {
             if (!await _courseService.ExistsAsync(id))
@@ -131,6 +134,7 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = TeacherOrAdmin)]
         public async Task<IActionResult> Edit(CourseFormModel inputModel, string id)
         {
             if (!await _courseService.ExistsAsync(id))

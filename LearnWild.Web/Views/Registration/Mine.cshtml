@@ -9,7 +9,7 @@
 @{
 	var activeCourses = Model.Where(r => r.HasStarted).ToArray();
 	var futureCourses = Model.Where(r => r.InFuture).ToArray();
-	var completedCourses = Model.Where(r => r.CreditsReceived.HasValue).ToArray();
+	var completedCourses = Model.Where(r => !r.HasStarted && !r.InFuture).ToArray();
 }
 
 <div class="container overflow-hidden">

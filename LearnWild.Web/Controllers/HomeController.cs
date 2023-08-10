@@ -14,18 +14,18 @@ namespace LearnWild.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("All", "Course");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(int statusCode)
+        public IActionResult Error(int id)
         {
-            if (statusCode == StatusCodes.Status400BadRequest || statusCode == StatusCodes.Status404NotFound)
+            if (id == StatusCodes.Status400BadRequest || id == StatusCodes.Status404NotFound)
             {
                 return View("Error404");
             }
 
-            if (statusCode == StatusCodes.Status401Unauthorized)
+            if (id == StatusCodes.Status401Unauthorized)
             {
                 return View("Error401");
             }

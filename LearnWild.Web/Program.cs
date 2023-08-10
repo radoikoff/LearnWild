@@ -68,7 +68,7 @@ namespace LearnWild.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error/500");
-                app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
+                app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
                 app.UseHsts();
             }
 

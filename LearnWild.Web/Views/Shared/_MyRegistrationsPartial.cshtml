@@ -22,7 +22,7 @@
 			<h6>End: <b>@Model.End</b></h6>
 		</div>
 		<h6>Credits received: <b>@(Model.CreditsReceived.HasValue ? Model.CreditsReceived : "Not evaluated")</b></h6>
-		<h6>Exam score: <b>@(Model.Score.HasValue ? Model.Score : "Not evaluated")</b></h6>
+		<h6>Exam score: <b>@(Model.Score.HasValue ? $"{Model.Score:f2}" : "Not evaluated")</b></h6>
 		<p class="card-text">Teacher: @Model.Teacher</p>
 		<a class="stretched-link" asp-controller="Course" asp-action="Details" asp-route-id="@Model.CourseId"></a>
 	</div>
