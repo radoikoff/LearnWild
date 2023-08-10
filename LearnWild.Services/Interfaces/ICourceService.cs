@@ -18,5 +18,6 @@ namespace LearnWild.Services.Interfaces
 		Task<bool> IsScheduled(DateTime? start, DateTime? end, string teacherId, string? currentCourseId = null);
         Task<CourseScoresViewModel>GetAllStudentsWithScoresAsync(string courseId);
 		Task<string> GetCourseTitleAsync(string courseId);
+        Task<IEnumerable<CourseAllViewModel>> GetCoursesByTeacherIdAsync(string teacherId);
 	}
 }

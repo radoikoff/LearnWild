@@ -31,6 +31,12 @@
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Mine">My Courses</a>
 							</li>
+							if (User.IsAdmin() || User.IsTeacher())
+							{
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Mine">Teaching Courses</a>
+								</li>
+							}
 						}
 					</ul>
 					<partial name="_LoginPartial" />

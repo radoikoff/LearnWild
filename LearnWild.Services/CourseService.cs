@@ -117,6 +117,7 @@ namespace LearnWild.Services
                                             Category = c.Category.Name,
                                             Type = c.Type.Name,
                                             Credits = c.MaxCredits,
+                                            DurationInDays = (c.End - c.Start).Days,
                                             Start = c.Start.ToString("dd-MMM-yyyy"),
                                             End = c.End.ToString("dd-MMM-yyyy"),
                                             Active = c.Active,
@@ -245,6 +246,28 @@ namespace LearnWild.Services
                                              .FirstOrDefaultAsync();
 
             return name ?? string.Empty;
+        }
+
+        public async Task<IEnumerable<CourseAllViewModel>> GetCoursesByTeacherIdAsync(string teacherId)
+        {
+            var teachingCourses = await _context.Courses
+                                                .Where(c => c.Deleted == false && c.TeacherId == Guid.Parse(teacherId))
+                                                .Select(c => new CourseAllViewModel
+                                                {
+                                                    Id = c.Id.ToString(),
+                                                    Title = c.Title,
+                                                    Category = c.Category.Name,
+                                                    Type = c.Type.Name,
+                                                    Credits = c.MaxCredits,
+                                                    Start = c.Start.ToString("dd-MMM-yyyy"),
+                                                    End = c.End.ToString("dd-MMM-yyyy"),
+                                                    DurationInDays = (c.End - c.Start).Days,
+                                                    Active = c.Active,
+                                                    Price = c.Price,
+                                                    Teacher = $"{c.Teacher.FirstName} {c.Teacher.LastName}"
+                                                })
+                                                .ToArrayAsync();
+            return teachingCourses;
         }
     }
 }

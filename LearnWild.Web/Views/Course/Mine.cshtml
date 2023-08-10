@@ -1,0 +1,32 @@
+﻿@model IEnumerable<CourseAllViewModel>
+@using LearnWild.Web.Infrastructure.Extensions;
+
+<div class="container">
+@*	<div class="row my-3">
+		<div class="col-md-12">
+			@if (User.Identity?.IsAuthenticated ?? false)
+			{
+				if (User.IsAdmin() || User.IsTeacher())
+				{
+					<a asp-controller="Course" asp-action="Create" class="btn btn-success">Create New</a>
+				}
+
+				<a asp-controller="Course" asp-action="Calendar" class="btn btn-outline-success">Switch to calendar</a>
+			}
+		</div>
+	</div>*@
+	<div class="row my-3">
+		<div class="col-9 offset-1">
+			<div class="row">
+				@foreach (var course in Model)
+				{
+					<partial name="_CoursePartial" model="@course" />
+				}
+				@if (!Model.Any())
+				{
+					<h6 class="text-center">No courses where you are the teacher!</h6>
+				}
+			</div>
+		</div>
+	</div>
+</div>

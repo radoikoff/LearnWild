@@ -177,5 +177,13 @@ namespace LearnWild.Web.Controllers
             return new JsonResult(allEvents);
         }
 
+        [HttpGet]
+        [Authorize(Policy = TeacherOrAdmin)]
+        public async Task<IActionResult> Mine()
+        {
+            var teachingCourses = await _courseService.GetCoursesByTeacherIdAsync(User.GetId());
+            return View(teachingCourses);
+        }
+
     }
 }

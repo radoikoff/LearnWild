@@ -19,17 +19,18 @@
 			<h6>Category: <b>@Model.Category</b></h6>
 			<h6>Type: <b>@Model.Type</b></h6>
 			<h6>Price: <b>@(Model.Price.HasValue ? $"{Model.Price:f2} BGN" : "Free")</b></h6>
+			<h6>Teacher: <b>@Model.Teacher</b></h6>
 			<div class="d-flex align-content-start">
 				<h6 class="me-2">Start: <b>@Model.Start</b></h6>
-				<h6>End: <b>@Model.End</b></h6>
+				<h6>Duration: <b>@Model.DurationInDays</b> d</h6>
 			</div>
-			<div class="d-flex justify-content-start mt-2">
+			<div class="d-flex justify-content-start mt-3">
 				@if (Model.Active)
 				{
 					if (Model.Price.HasValue)
 					{
 						<form class="me-2" asp-controller="Cart" asp-action="Add">
-							<input name="CourseId" value="@Model.Id" hidden/>
+							<input name="CourseId" value="@Model.Id" hidden />
 							<button class="btn btn-warning">Add to Cart</button>
 						</form>
 					}
