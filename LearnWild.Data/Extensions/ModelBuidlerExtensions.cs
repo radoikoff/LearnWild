@@ -15,6 +15,9 @@ namespace LearnWild.Data.Extensions
 
             builder.Entity<Category>().HasData(EntitySeeder.GenerateCategories());
             builder.Entity<CourseType>().HasData(EntitySeeder.GenerateCourseTypes());
+
+            builder.Entity<Course>().HasData(EntitySeeder.GenerateCourses());
+            builder.Entity<CourseRegistration>().HasData(EntitySeeder.GenerateCourseRegistrations());
         }
     }
 }
