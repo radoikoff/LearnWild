@@ -21,7 +21,8 @@
 						<th>Topic Title</th>
 						<th>Description</th>
 						<th class="text-center">Resourses count</th>
-						<th>Actions</th>
+						<th>Topic Actions</th>
+						<th>Resource Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -44,7 +45,11 @@
 								data-bs-topic-title="@topic.Title">
 									Delete
 								</button>
-
+							</td>
+							<td>
+								<a asp-controller="Resource" asp-action="Create" asp-route-topicId=@topic.Id class="btn btn-warning btn-sm">
+									Add Resource
+								</a>
 							</td>
 						</tr>
 					}

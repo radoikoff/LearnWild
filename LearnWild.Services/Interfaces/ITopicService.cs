@@ -1,4 +1,5 @@
 ﻿using LearnWild.Web.ViewModels.Topic;
+using LearnWild.Web.ViewModels.User;
 
 namespace LearnWild.Services.Interfaces
 {
@@ -11,5 +12,6 @@ namespace LearnWild.Services.Interfaces
         Task<bool> ExistsAsync(string id);
         Task<IEnumerable<AllTopicsViewModel>> GetAllTopicsForCourseAsync(string courseId);
         Task<TopicFormModel?> GetByIdForEditAsync(string id);
-    }
+		Task<UserSelectViewModel> GetTeacherByTopicIdAsync(string topicId);
+	}
 }

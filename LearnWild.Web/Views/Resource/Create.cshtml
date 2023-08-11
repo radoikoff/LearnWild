@@ -1,0 +1,48 @@
+﻿@model ResourceFormModel
+
+@{
+	ViewData["Title"] = "Create Resource";
+}
+
+<h3 class="text-center">Create resource for @Model.TopicTitle</h3>
+@*<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<div class="d-flex justify-content-evenly">
+			<h6>start: <b>@model.coursestart</b></h6>
+			<h6>end: <b>@model.coursestart</b></h6>
+		</div>
+	</div>
+</div>*@
+
+<hr />
+
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+
+		<div asp-validation-summary="ModelOnly" class="small text-danger"></div>
+		<form method="post" enctype="multipart/form-data" class="row g-3" novalidate>
+			<input type="hidden" asp-for="TopicId" />
+			<input type="hidden" asp-for="CourseId" />
+			<input type="hidden" asp-for="TopicTitle" />
+			<div class="form-group col-md-6">
+				<label asp-for="DisplayName"></label>
+				<input asp-for="DisplayName" class="form-control">
+				<span asp-validation-for="DisplayName" class="small text-danger"></span>
+			</div>
+			<div class="form-group col-md-6">
+				<label asp-for="Url"></label>
+				<input asp-for="Url" class="form-control">
+				<span asp-validation-for="Url" class="small text-danger"></span>
+			</div>
+			<div class="form-group col-md-12">
+				<label asp-for="FormFile"></label>
+				<input type="file" asp-for="FormFile" class="form-control">
+				<span asp-validation-for="FormFile" class="small text-danger"></span>
+			</div>
+			<div class="text-center mt-3">
+				<button class="btn btn-success" type="submit">Upload</button>
+				<a asp-controller="Topic" asp-action="All" asp-route-courseId="@Model.CourseId" class="btn btn-outline-secondary">Back</a>
+			</div>
+		</form>
+	</div>
+</div>
