@@ -50,10 +50,16 @@ namespace LearnWild.Web.Controllers
 			}
 
 			var teacher = await _topicService.GetTeacherByTopicIdAsync(model.TopicId);
+			var teacherId = teacher?.Id ?? string.Empty;
 
-			if (((teacher?.Id ?? string.Empty) != User.GetId()) || !User.IsAdmin())
+			if (!((teacherId == User.GetId()) || User.IsAdmin()))
 			{
 				ModelState.AddModelError(string.Empty, "Only course teacher can add resources!");
+			}
+
+			if(await _resourceService.ExistsAsync(model.TopicId, model.DisplayName))
+			{
+				ModelState.AddModelError(string.Empty, "Resource with same name already exists!");
 			}
 
 			if (!ModelState.IsValid)
@@ -61,7 +67,13 @@ namespace LearnWild.Web.Controllers
 				return View(model);
 			}
 
-			await _resourceService.CreateResourseAsync(model);
+			bool succeeded = await _resourceService.CreateResourseAsync(model);
+
+			if (!succeeded)
+			{
+				TempData[ErrorMessage] = "Fail to create resourse!";
+				return View(model);
+			}
 
 			TempData[SuccessMessage] = "Resource successfuly created.";
 			return RedirectToAction("All", "Topic", new { courseId = model.CourseId });
