@@ -62,7 +62,7 @@ namespace LearnWild.Web.Controllers
                 new Claim(AppClaimTypes.LastName, userCandidate.LastName ?? string.Empty),
             };
 
-            await _signInManager.SignInWithClaimsAsync(userCandidate, true, customClaims);
+            await _signInManager.SignInWithClaimsAsync(userCandidate, model.RememberMe, customClaims);
 
             return LocalRedirect(model.ReturnUrl ?? "/Course/All");
         }
@@ -113,7 +113,7 @@ namespace LearnWild.Web.Controllers
                 new Claim(AppClaimTypes.LastName, user.LastName ?? string.Empty),
             };
 
-            await _signInManager.SignInWithClaimsAsync(user, true, customClaims);
+            await _signInManager.SignInWithClaimsAsync(user, false, customClaims);
             return LocalRedirect(model.ReturnUrl ?? "/Course/All");
         }
     }
