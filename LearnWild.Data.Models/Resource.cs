@@ -29,5 +29,10 @@ namespace LearnWild.Data.Models
         [MaxLength(FilePathMaxLength)]
         public string? FilePath { get; set; }
 
+        [MaxLength(FileNameMaxLength)]
+        public string? FileName { get; set; }
+
+        [MaxLength(MimeTypeMaxLength)]
+        public string? MimeType { get; set; }
     }
 }

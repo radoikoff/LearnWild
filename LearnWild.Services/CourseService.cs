@@ -4,15 +4,10 @@ using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Course;
 using LearnWild.Web.ViewModels.Event;
 using LearnWild.Web.ViewModels.Registration;
+using LearnWild.Web.ViewModels.Resource;
 using LearnWild.Web.ViewModels.Topic;
 using LearnWild.Web.ViewModels.User;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LearnWild.Services
 {
@@ -149,7 +144,14 @@ namespace LearnWild.Services
                     {
                         Id = t.Id.ToString(),
                         Title = t.Title,
-                        Description = t.Description
+                        Description = t.Description,
+                        Resources = t.Resources.Select(r => new ResourceViewModel()
+                        {
+                            Id = r.Id.ToString(),
+                            DisplayName = r.DisplayName,
+                            FileName = r.FileName,
+                            Url = r.Url
+                        }).ToArray(),
                     }).ToArray()
                 })
                 .FirstOrDefaultAsync();

@@ -2,86 +2,110 @@
 @model CourseDetailsViewModel
 
 @{
-	ViewBag.Title = "Course Details";
+    ViewBag.Title = "Course Details";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="container">
-	<div class="card mb-3">
-		<div class="card-body text-white bg-primary">
-			<h2 class="card-title">@Model.Title</h2>
-		</div>
-		<div class="card-footer d-flex justify-content-between">
+    <div class="card mb-3">
+        <div class="card-body text-white bg-primary">
+            <h2 class="card-title">@Model.Title</h2>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
 
-			@if (Model.Price == null)
-			{
-				<span class="badge me-2 rounded-pill bg-success">Free</span>
-			}
-			else
-			{
-				<span class="badge me-2 rounded-pill bg-warning text-dark">Paid</span>
-			}
-			<span class="badge me-auto rounded-pill bg-warning ">@Model.Type</span>
-			<span class="card-text me-2">Category: <b>@Model.Category</b></span>
-			<span class="card-text me-2">Credits: <b>@Model.Credits</b></span>
-			@*<span class="card-text me-2">Duration: <b>@Model.Duration</b> h</span>*@
-			@if (Model.Price != null)
-			{
-				<span class="card-text">Price: <b>@($"{Model.Price:f2}")</b> BGN</span>
-			}
-		</div>
-	</div>
-	<div class="card mb-3">
-		<div class="card-body">
-			<h5>You will learn:</h5>
-			@if (Model.Topics.Any())
-			{
-				<div class="accordion mt-3" id="accordionExample">
-					@{
-						var topics = Model.Topics.ToArray();
-						for (int i = 0; i < topics.Length; i++)
-						{
-							<div class="accordion-item">
-								<h2 class="accordion-header" id="heading@(i)">
-									<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)">
-										@topics[i]?.Title
-									</button>
-								</h2>
-								<div id="collapse@(i)" class="accordion-collapse collapse" aria-labelledby="heading@(i)" data-bs-parent="#accordionExample">
-									<div class="accordion-body">
-										@topics[i]?.Description
-									</div>
-								</div>
-							</div>
-						}
-					}
-				</div>
-			}
-			else
-			{
-				<p>Topics not defiend yet!</p>
-			}
+            @if (Model.Price == null)
+            {
+                <span class="badge me-2 rounded-pill bg-success">Free</span>
+            }
+            else
+            {
+                <span class="badge me-2 rounded-pill bg-warning text-dark">Paid</span>
+            }
+            <span class="badge me-auto rounded-pill bg-warning ">@Model.Type</span>
+            <span class="card-text me-2">Category: <b>@Model.Category</b></span>
+            <span class="card-text me-2">Credits: <b>@Model.Credits</b></span>
+            @*<span class="card-text me-2">Duration: <b>@Model.Duration</b> h</span>*@
+            @if (Model.Price != null)
+            {
+                <span class="card-text">Price: <b>@($"{Model.Price:f2}")</b> BGN</span>
+            }
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>You will learn:</h5>
+            @if (Model.Topics.Any())
+            {
+                <div class="accordion mt-3" id="accordionExample">
+                    @{
+                        var topics = Model.Topics.ToArray();
+                        for (int i = 0; i < topics.Length; i++)
+                        {
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading@(i)">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)">
+                                        @topics[i]?.Title
+                                    </button>
+                                </h2>
+                                <div id="collapse@(i)" class="accordion-collapse collapse" aria-labelledby="heading@(i)" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p>@topics[i]?.Description</p>
+                                        <p><u>Resources</u></p>
+                                        @if (@topics[i].Resources.Any())
+                                        {
+                                            <ul>
+                                                @foreach (var resource in topics[i].Resources)
+                                                {
+                                                    <li>
+                                                        <span>@resource.DisplayName - </span>
+                                                        @if (resource.IsFile)
+                                                        {
+                                                            <a asp-controller="Resource" asp-action="Download" asp-route-id="@resource.Id" asp-route-returnUrl="@Context.Request.Path">@resource.FileName</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a href="@resource.Url" target="_blank">Link</a>
+                                                        }
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-secondary">No resources yet.</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Topics not defiend yet!</p>
+            }
 
-			@if ((this.User.Identity?.IsAuthenticated ?? false) && (User.GetId() == Model.TeacherId || User.IsAdmin()))
-			{
-				<a class="btn btn-warning mt-3" asp-controller="Topic" asp-action="All" asp-route-courseId="@Model.Id">Edit Topics</a>
-			}
-		</div>
-	</div>
-	@if ((this.User.Identity?.IsAuthenticated ?? false) && (User.GetId() == Model.TeacherId || User.IsAdmin()))
-	{
-		<div class="card">
-			<div class="card-header">
-				<h6 class="card-title">Course Actions</h6>
-			</div>
-			<div class="card-body">
-				<div class="d-flex">
-					<a class=" me-2 btn btn-warning" asp-controller="Course" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-					<a class="btn btn-danger" asp-controller="Registration" asp-action="Manage" asp-route-id="@Model.Id">Manage Students</a>
-				</div>
-			</div>
-		</div>
-	}
+            @if ((this.User.Identity?.IsAuthenticated ?? false) && (User.GetId() == Model.TeacherId || User.IsAdmin()))
+            {
+                <a class="btn btn-warning mt-3" asp-controller="Topic" asp-action="All" asp-route-courseId="@Model.Id">Edit Topics</a>
+            }
+        </div>
+    </div>
+    @if ((this.User.Identity?.IsAuthenticated ?? false) && (User.GetId() == Model.TeacherId || User.IsAdmin()))
+    {
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title">Course Actions</h6>
+            </div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <a class=" me-2 btn btn-warning" asp-controller="Course" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Registration" asp-action="Manage" asp-route-id="@Model.Id">Manage Students</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

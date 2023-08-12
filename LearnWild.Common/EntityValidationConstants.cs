@@ -50,6 +50,10 @@
             public const int UrlMaxLength = 2048;
 
             public const int FilePathMaxLength = 2048;
+
+            public const int FileNameMaxLength = 2048;
+
+            public const int MimeTypeMaxLength = 255;
         }
 
         public static class ApplicationUser
