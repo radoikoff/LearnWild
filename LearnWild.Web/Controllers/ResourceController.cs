@@ -8,7 +8,7 @@ using LearnWild.Web.Infrastructure.Extensions;
 
 namespace LearnWild.Web.Controllers
 {
-    [Authorize(Policy = TeacherOrAdmin)]
+    [Authorize]
     public class ResourceController : Controller
     {
         private readonly IResourceService _resourceService;
@@ -22,6 +22,7 @@ namespace LearnWild.Web.Controllers
 
 
         [HttpGet]
+        [Authorize(Policy = TeacherOrAdmin)]
         public async Task<IActionResult> Create(string topicId)
         {
             var topic = await _topicService.GetByIdForEditAsync(topicId);
@@ -41,6 +42,7 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = TeacherOrAdmin)]
         public async Task<IActionResult> Create(ResourceFormModel model)
         {
             if (!await _topicService.ExistsAsync(model.TopicId))
@@ -79,6 +81,7 @@ namespace LearnWild.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Download(string id, string returnUrl)
         {
             if (!await _resourceService.ExistsAsync(id))
