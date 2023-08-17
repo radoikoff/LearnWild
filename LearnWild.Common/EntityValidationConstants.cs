@@ -73,5 +73,23 @@
             public const decimal MinScore = 2.00m;
             public const decimal MaxScore = 6.00m;
         }
+
+        public static class Quiz
+        {
+            public const int TitleMinLength = 3;
+            public const int TitleMaxLength = 255;
+        }
+
+        public static class Question
+        {
+            public const int TextMinLength = 3;
+            public const int TextMaxLength = 1024;
+        }
+
+        public static class Response
+        {
+            public const int TextMinLength = 3;
+            public const int TextMaxLength = 1024;
+        }
     }
 }

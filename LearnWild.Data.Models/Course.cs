@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static LearnWild.Common.EntityValidationConstants.Course;
 
 namespace LearnWild.Data.Models
@@ -53,6 +54,8 @@ namespace LearnWild.Data.Models
         public ICollection<Topic> Topics { get; set; }
 
         public ICollection<CourseRegistration> Registrations { get; set; }
+
+        public Quiz? Quiz { get; set; }
 
     }
 }

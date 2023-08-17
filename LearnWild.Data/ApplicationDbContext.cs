@@ -21,6 +21,11 @@ namespace LearnWild.Data
         public DbSet<Topic> Topics { get; set; } = null!;
         public DbSet<Resource> Resources { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<Quiz> Quizzes { get; set; } = null!;
+        public DbSet<Question> Questions { get; set; } = null!;
+        public DbSet<Response> Responses { get; set; } = null!;
+        public DbSet<QuizAttempt> QuizAttempts { get; set; } = null!;
+        public DbSet<StudentResponse> StudentResponses { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder builder)

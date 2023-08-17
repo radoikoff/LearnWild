@@ -11,6 +11,7 @@ namespace LearnWild.Data.Models
             this.Registrations = new HashSet<CourseRegistration>();
             this.TeachingCourses = new HashSet<Course>();
             this.CreatedCourses = new HashSet<Course>();
+            this.QuizAttempts = new HashSet<QuizAttempt>();
         }
 
         [MaxLength(FirstNameMaxLength)]
@@ -22,5 +23,6 @@ namespace LearnWild.Data.Models
         public ICollection<CourseRegistration> Registrations { get; set; }
         public ICollection<Course> TeachingCourses { get; set; }
         public ICollection<Course> CreatedCourses { get; set; }
+        public ICollection<QuizAttempt> QuizAttempts { get; set; }
     }
 }
