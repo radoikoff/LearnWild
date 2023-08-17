@@ -29,5 +29,7 @@ namespace LearnWild.Web.ViewModels.Course
         public string Teacher { get; set; } = null!;
 
         public IEnumerable<TopicViewModel> Topics { get; set; } = new HashSet<TopicViewModel>();
+
+        public string? QuizId { get; set; }
     }
 }

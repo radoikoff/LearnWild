@@ -1,4 +1,5 @@
 ﻿using LearnWild.Data;
+using LearnWild.Data.Models;
 using LearnWild.Services.Interfaces;
 using LearnWild.Web.ViewModels.Quiz;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,42 @@ namespace LearnWild.Services
         public QuizService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<AttemptViewModel> CreateAttemptAsync(string quizId, string studentId)
+        {
+            var attempt = new QuizAttempt()
+            {
+                QuizId = Guid.Parse(quizId),
+                StudentId = Guid.Parse(studentId),
+                StartedAt = DateTime.UtcNow,
+            };
+
+            _dbContext.QuizAttempts.Add(attempt);
+            await _dbContext.SaveChangesAsync();
+
+            return new AttemptViewModel
+            {
+                Id = attempt.Id.ToString(),
+                Active = true
+            };
+        }
+
+        public async Task<bool> ExistsAsync(string id)
+        {
+            return await _dbContext.Quizzes.AnyAsync(q => q.Id == Guid.Parse(id));
+        }
+
+        public async Task<AttemptViewModel?> GetAttemptAsync(string quizId, string studentId)
+        {
+            return await _dbContext.QuizAttempts
+                                   .Where(a => a.QuizId == Guid.Parse(quizId) && a.StudentId == Guid.Parse(studentId))
+                                   .Select(a => new AttemptViewModel()
+                                   {
+                                       Id = a.Id.ToString(),
+                                       Active = a.FinishedAt.HasValue == false,
+                                   })
+                                   .FirstOrDefaultAsync();
         }
 
         public async Task<QuizStepModel> GetQuizStepAsync(string questionId, string studentId)

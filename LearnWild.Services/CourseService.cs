@@ -152,7 +152,8 @@ namespace LearnWild.Services
                             FileName = r.FileName,
                             Url = r.Url
                         }).ToArray(),
-                    }).ToArray()
+                    }).ToArray(),
+                    QuizId = c.Quiz!.Id.ToString(),
                 })
                 .FirstOrDefaultAsync();
             return course;

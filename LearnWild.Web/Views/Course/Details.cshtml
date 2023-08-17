@@ -108,4 +108,19 @@
             </div>
         </div>
     }
+    @if ((this.User.Identity?.IsAuthenticated ?? false) && Model.QuizId != null)
+    {
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="d-flex">
+                    <a class=" me-2 btn btn-success" 
+                    asp-area="Quiz" 
+                    asp-controller="Quiz" 
+                    asp-action="Start" 
+                    asp-route-id="@Model.QuizId"
+                    asp-route-courseId="@Model.Id">Start Quiz</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

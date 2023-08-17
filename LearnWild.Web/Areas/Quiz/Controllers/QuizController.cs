@@ -1,4 +1,6 @@
-﻿using LearnWild.Services.Interfaces;
+﻿using LearnWild.Data.Models;
+using LearnWild.Services;
+using LearnWild.Services.Interfaces;
 using LearnWild.Web.Infrastructure.Extensions;
 using LearnWild.Web.ViewModels;
 using LearnWild.Web.ViewModels.Quiz;
@@ -14,10 +16,42 @@ namespace LearnWild.Web.Areas.Quiz.Controllers
     {
 
         private readonly IQuizService _quizService;
+        private readonly IRegistrationService _registrationService;
 
-        public QuizController(IQuizService quizService)
+        public QuizController(IQuizService quizService, IRegistrationService registrationService)
         {
             _quizService = quizService;
+            _registrationService = registrationService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Start(string id, string courseId)
+        {
+            if (!await _quizService.ExistsAsync(id))
+            {
+                TempData[ErrorMessage] = "Quiz does not exists!";
+                return RedirectToAction("Details", "Course", new { Id = courseId, Area = string.Empty });
+            }
+
+            if (!await _registrationService.IsUserEnrolledAsync(User.GetId(), courseId))
+            {
+                TempData[ErrorMessage] = "You are not student in this course!";
+                return RedirectToAction("Details", "Course", new { Id = courseId, Area = string.Empty });
+            }
+
+            var attempt = await _quizService.GetAttemptAsync(id, User.GetId());
+            if (attempt == null)
+            {
+                attempt = await _quizService.CreateAttemptAsync(id, User.GetId());
+            }
+
+            if (attempt.Active == false)
+            {
+                TempData[ErrorMessage] = "You already finished that quiz!";
+                return RedirectToAction("Details", "Course", new { Id = courseId, Area = string.Empty });
+            }
+
+            return RedirectToAction("Step", "Quiz", new { Id = attempt.Id });
         }
 
         [HttpGet]
@@ -54,6 +88,8 @@ namespace LearnWild.Web.Areas.Quiz.Controllers
                 return View(model);
             }
         }
+
+
 
 
     }
