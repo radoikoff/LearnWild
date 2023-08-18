@@ -9,6 +9,7 @@ namespace LearnWild.Services.Interfaces
 {
 	public interface IQuizService
 	{
+		Task<StudentQuizResultViewModel> CompleteAttemptAsync(string id, string studentId);
 		Task<AttemptViewModel> CreateAttemptAsync(string quizId, string studentId);
 		Task<bool> ExistsAsync(string id);
 		Task<AttemptViewModel?> GetAttemptAsync(string quizId, string studentId);

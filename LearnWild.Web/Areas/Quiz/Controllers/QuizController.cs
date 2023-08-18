@@ -90,6 +90,41 @@ namespace LearnWild.Web.Areas.Quiz.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> Complete(string id)
+        {
+
+            if (!await _quizService.ExistsAsync(id))
+            {
+                TempData[ErrorMessage] = "Quiz does not exists!";
+                return RedirectToAction("Error", "Home", new { Id = 404, Area = string.Empty });
+            }
+
+            //if (!await _registrationService.IsUserEnrolledAsync(User.GetId(), courseId))
+            //{
+            //    TempData[ErrorMessage] = "You are not student in this course!";
+            //    return RedirectToAction("Details", "Course", new { Id = courseId, Area = string.Empty });
+            //}
+
+            var attempt = await _quizService.GetAttemptAsync(id, User.GetId());
+
+            if (attempt == null)
+            {
+                TempData[ErrorMessage] = "This quiz is not started!";
+                return RedirectToAction("All", "Course", new { Area = string.Empty });
+            }
+
+            if (attempt.Active == false)
+            {
+                TempData[ErrorMessage] = "You already finished that quiz!";
+                return RedirectToAction("All", "Course", new { Area = string.Empty });
+            }
+
+            var studentResult = await _quizService.CompleteAttemptAsync(id, User.GetId());
+
+            return View(studentResult);
+        }
+
 
 
     }

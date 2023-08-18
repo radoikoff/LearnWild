@@ -21,6 +21,36 @@ namespace LearnWild.Services
             _dbContext = dbContext;
         }
 
+        public async Task<StudentQuizResultViewModel> CompleteAttemptAsync(string quizId, string studentId)
+        {
+            var attempt = await _dbContext.QuizAttempts.FirstOrDefaultAsync(qa => qa.QuizId == Guid.Parse(quizId) && qa.StudentId == Guid.Parse(studentId));
+
+            if (attempt == null)
+            {
+                throw new InvalidOperationException("No such Quiz Attempt");
+            }
+
+            attempt.FinishedAt = DateTime.UtcNow;
+
+            await _dbContext.SaveChangesAsync();
+
+
+            int correctResponses = await _dbContext.StudentResponses
+                .Where(sr => sr.QuizAttempt.QuizId == Guid.Parse(quizId) && sr.QuizAttempt.StudentId == Guid.Parse(studentId))
+                .CountAsync(sr => sr.Response.IsCorrect);
+
+            int totalResponses = await _dbContext.Questions
+                                                 .Where(q => q.QuizId == Guid.Parse(quizId))
+                                                 .CountAsync();
+
+            return new StudentQuizResultViewModel()
+            {
+                StudentId = studentId,
+                CorrectResponsesCount = correctResponses,
+                TotalResponsesCount = totalResponses,
+            };
+        }
+
         public async Task<AttemptViewModel> CreateAttemptAsync(string quizId, string studentId)
         {
             var attempt = new QuizAttempt()

@@ -1,0 +1,20 @@
+﻿@model StudentQuizResultViewModel
+
+@{
+	ViewData["Title"] = "Quiz Results";
+}
+
+<h3 class="text-center">Quiz Results</h3>
+<hr />
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<div class="text-center">
+			<h4>Your result is: <b>@Model.CorrectResponsesCount / @Model.TotalResponsesCount</b></h4>
+		</div>
+		<div class="text-center" style="margin-top: 20vh;">
+			<a asp-area="" asp-controller="Course" asp-action="All" class="btn btn-outline-secondary">Back to Courses</a>
+		</div>
+	</div>
+</div>
+
+<hr />
