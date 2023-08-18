@@ -19,6 +19,6 @@ namespace LearnWild.Data.Models
 
         public ICollection<Response> Responses { get; set; } = new HashSet<Response>();
 
-        //public Guid CorrectResponse { get; set; }
+        public ICollection<StudentResponse> StudentResponses { get; set; } = new HashSet<StudentResponse>();
     }
 }

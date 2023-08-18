@@ -12,9 +12,7 @@ namespace LearnWild.Services.Interfaces
 		Task<AttemptViewModel> CreateAttemptAsync(string quizId, string studentId);
 		Task<bool> ExistsAsync(string id);
 		Task<AttemptViewModel?> GetAttemptAsync(string quizId, string studentId);
-		Task<QuizStepModel> GetQuizStepAsync(string questionId, string studentId);
-		Task<bool> HasStudentAccessToQuestionAsync(string questionId, string studentId);
-		Task<bool> QuestionExistsAsync(string questionId);
-		Task SaveStepAsync(string questionId, string responseId);
+		Task<QuizStepModel> GetQuizStepAsync(string quizId, int step = 1);
+		Task SaveStepAsync(string quizId, string questionId, string responseId, string studentId);
 	}
 }

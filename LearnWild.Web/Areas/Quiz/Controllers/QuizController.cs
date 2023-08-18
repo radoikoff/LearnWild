@@ -6,6 +6,7 @@ using LearnWild.Web.ViewModels;
 using LearnWild.Web.ViewModels.Quiz;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static LearnWild.Common.EntityValidationConstants;
 using static LearnWild.Common.NotificationMessagesConstants;
 
 namespace LearnWild.Web.Areas.Quiz.Controllers
@@ -51,40 +52,39 @@ namespace LearnWild.Web.Areas.Quiz.Controllers
                 return RedirectToAction("Details", "Course", new { Id = courseId, Area = string.Empty });
             }
 
-            return RedirectToAction("Step", "Quiz", new { Id = attempt.Id });
+            return RedirectToAction("Step", "Quiz", new { Id = id });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Step(string questionId)
-        {
-            if (!await _quizService.QuestionExistsAsync(questionId))
-            {
-                return BadRequest();
-            }
-
-            //if (!await _quizService.HasStudentAccessToQuestionAsync(questionId, User.GetId()))
-            //{
-            //    BadRequest();
-            //}
-
-            var model = await _quizService.GetQuizStepAsync(questionId, User.GetId());
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Step(string questionId, string responseId)
+        public async Task<IActionResult> Step(string id, int step = 1)
         {
             try
             {
-                await _quizService.SaveStepAsync(questionId, responseId);
+                var model = await _quizService.GetQuizStepAsync(id, step);
+                return View(model);
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "There is a probem with current quiz step! Please restart the quiz!";
+                return RedirectToAction("All", "Course", new { Area = string.Empty });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Step(string questionId, string responseId, string quizId, int step)
+        {
+            try
+            {
+                await _quizService.SaveStepAsync(quizId, questionId, responseId, User.GetId());
                 TempData[SuccessMessage] = "Saved";
-                var model = await _quizService.GetQuizStepAsync(questionId, User.GetId());
+                var model = await _quizService.GetQuizStepAsync(quizId, step);
                 return View(model);
             }
             catch (Exception)
             {
                 TempData[ErrorMessage] = "Someting was wrong! Please try again!";
-                var model = await _quizService.GetQuizStepAsync(questionId, User.GetId());
+                var model = await _quizService.GetQuizStepAsync(quizId, step);
                 return View(model);
             }
         }

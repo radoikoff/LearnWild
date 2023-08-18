@@ -8,6 +8,8 @@ namespace LearnWild.Web.ViewModels.Quiz
 {
     public class QuizStepModel
     {
+        public string QuizId { get; set; } = null!;
+
         public string QuestionId { get; set; } = null!;
 
         public string QuestionText { get; set; } = null!;

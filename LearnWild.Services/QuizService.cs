@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,12 +57,14 @@ namespace LearnWild.Services
                                    .FirstOrDefaultAsync();
         }
 
-        public async Task<QuizStepModel> GetQuizStepAsync(string questionId, string studentId)
+        public async Task<QuizStepModel> GetQuizStepAsync(string quizId, int step)
         {
+
             var model = await _dbContext.Questions
-                                        .Where(q => q.Id == Guid.Parse(questionId))
+                                        .Where(q => q.QuizId == Guid.Parse(quizId) && q.SequentialNumber == step)
                                         .Select(q => new QuizStepModel()
                                         {
+                                            QuizId = q.QuizId.ToString(),
                                             QuestionId = q.Id.ToString(),
                                             QuestionText = q.Text,
                                             Responses = q.Responses.Select(r => new ResponseViewModel()
@@ -69,7 +72,7 @@ namespace LearnWild.Services
                                                 Id = r.Id.ToString(),
                                                 Text = r.Text,
                                                 Selected = r.StudentResponses.Any(sr => sr.ResponseId == r.Id &&
-                                                                                  sr.QuizAttempt.StudentId == Guid.Parse(studentId)),
+                                                                                  sr.QuizAttempt.Quiz.Id == Guid.Parse(quizId))
                                             }),
                                             CurrentStep = q.SequentialNumber,
                                         })
@@ -77,43 +80,51 @@ namespace LearnWild.Services
 
             if (model == null)
             {
-                throw new InvalidOperationException("Such question do not exists!");
+                throw new InvalidOperationException("Such quiz or step doesn't exists!");
             }
 
-            var quiz = await _dbContext.Quizzes
-                                       .Include(q => q.Questions)
-                                       .FirstOrDefaultAsync(q => q.Questions.Any(q => q.Id == Guid.Parse(questionId)));
-
-            if (quiz == null)
-            {
-                throw new InvalidOperationException("Quiz cannot be found!");
-            }
-
-            var steps = quiz.Questions.Select(q => new StepsViewModel()
-            {
-                QuestionId = q.Id.ToString(),
-                StepNumber = q.SequentialNumber
-            })
-            .ToArray();
+            var steps = await _dbContext.Questions
+                                       .Where(q => q.Quiz.Id == Guid.Parse(quizId))
+                                       .Select(q => new StepsViewModel()
+                                       {
+                                           QuestionId = q.Id.ToString(),
+                                           StepNumber = q.SequentialNumber
+                                       })
+                                       .ToArrayAsync();
 
             model.Steps = steps;
 
             return model;
         }
 
-        public Task<bool> HasStudentAccessToQuestionAsync(string questionId, string studentId)
+        public async Task SaveStepAsync(string quizId, string questionId, string responseId, string studentId)
         {
-            throw new NotImplementedException();
-        }
+            var studentResponse = await _dbContext.StudentResponses.SingleOrDefaultAsync(sr =>
+                sr.QuizAttempt.QuizId == Guid.Parse(quizId) &&
+                sr.QuestionId == Guid.Parse(questionId));
 
-        public async Task<bool> QuestionExistsAsync(string questionId)
-        {
-            return await _dbContext.Questions.AnyAsync(q => q.Id == Guid.Parse(questionId));
-        }
+            if (studentResponse == null)
+            {
+                var quizAttempt = await _dbContext.QuizAttempts.FirstAsync(qa => qa.QuizId == Guid.Parse(quizId) &&
+                                        qa.StudentId == Guid.Parse(studentId));
 
-        public Task SaveStepAsync(string questionId, string responseId)
-        {
-            return Task.CompletedTask;
+                studentResponse = new StudentResponse()
+                {
+                    QuizAttempt = quizAttempt,
+                    QuestionId = Guid.Parse(questionId),
+                    ResponseId = Guid.Parse(responseId),
+                    RespondedOn = DateTime.UtcNow,
+                };
+
+                _dbContext.StudentResponses.Add(studentResponse);
+            }
+            else
+            {
+                studentResponse.ResponseId = Guid.Parse(responseId);
+                studentResponse.RespondedOn = DateTime.UtcNow;
+            }
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

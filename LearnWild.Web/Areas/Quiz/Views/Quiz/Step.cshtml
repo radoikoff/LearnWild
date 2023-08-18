@@ -21,7 +21,8 @@
 			   asp-area="Quiz"
 			   asp-controller="Quiz"
 			   asp-action="Step"
-			   asp-route-questionId="@(Model.Steps.FirstOrDefault(s=>s.StepNumber == Model.CurrentStep - 1)?.QuestionId ?? string.Empty)">&laquo;</a>
+			   asp-route-id="@Model.QuizId"
+			   asp-route-step="@(Model.CurrentStep - 1)">&laquo;</a>
 			</li>
 		}
 
@@ -32,7 +33,8 @@
 			   asp-area="Quiz"
 			   asp-controller="Quiz"
 			   asp-action="Step"
-			   asp-route-questionId="@step.QuestionId">@step.StepNumber</a>
+			   asp-route-id="@Model.QuizId"
+			   asp-route-step="@step.StepNumber">@step.StepNumber</a>
 			</li>
 		}
 
@@ -49,7 +51,8 @@
 			   asp-area="Quiz"
 			   asp-controller="Quiz"
 			   asp-action="Step"
-			   asp-route-questionId="@(Model.Steps.FirstOrDefault(s=>s.StepNumber == Model.CurrentStep + 1)?.QuestionId ?? string.Empty)">&raquo;</a>
+			   asp-route-id="@Model.QuizId"
+			   asp-route-step="@(Model.CurrentStep + 1)">&raquo;</a>
 			</li>
 		}
 	</ul>
@@ -62,14 +65,15 @@
 
 			<form method="post" class="row g-2">
 				<div asp-validation-summary="ModelOnly" class="small text-danger"></div>
+				<input asp-for="QuizId" type="hidden" />
 				<input asp-for="QuestionId" type="hidden" />
 				<div class="form-group mt-3">
 					<label class="mb-1"><strong>Responses:</strong></label>
 					@foreach (var response in Model.Responses)
 					{
 						<div class="form-check">
-							<input class="form-check-input" asp-for="ResponseId" value="@response.Id" type="radio" checked="@(response.Selected)">
-							<label class="form-check-label" asp-for="ResponseId">@response.Text</label>
+							<input class="form-check-input" asp-for="ResponseId" value="@response.Id" id="@response.Id" type="radio" checked="@(response.Selected)">
+							<label class="form-check-label" for="@response.Id">@response.Text</label>
 						</div>
 					}
 				</div>
