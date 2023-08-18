@@ -3,6 +3,7 @@ using LearnWild.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace LearnWild.Data
@@ -34,7 +35,11 @@ namespace LearnWild.Data
                                  Assembly.GetExecutingAssembly();
 
             builder.ApplyConfigurationsFromAssembly(configAssembly);
-            builder.SeedData();
+
+            if (this.Database.IsSqlServer())
+            {
+                builder.SeedData();
+            }
 
             base.OnModelCreating(builder);
         }
