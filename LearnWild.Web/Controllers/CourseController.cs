@@ -86,7 +86,7 @@ namespace LearnWild.Web.Controllers
             bool scheduled = await _courseService.IsScheduled(inputModel.Start, inputModel.End, inputModel.TeacherId);
             if (scheduled)
             {
-                ModelState.AddModelError(string.Empty, "This course is already scheduled!");
+                ModelState.AddModelError(string.Empty, "There is conflict with another course!");
                 inputModel.Categories = await _categoryService.AllCategoriesAsync();
                 inputModel.Types = await _typeService.AllTypesAsync();
                 inputModel.Teachers = await _userService.GetTeachersAsync();
@@ -153,7 +153,7 @@ namespace LearnWild.Web.Controllers
             bool scheduled = await _courseService.IsScheduled(inputModel.Start, inputModel.End, inputModel.TeacherId, id);
             if (scheduled)
             {
-                ModelState.AddModelError(string.Empty, "This course is already scheduled!");
+                ModelState.AddModelError(string.Empty, "There is conflict with another course!");
                 inputModel.Categories = await _categoryService.AllCategoriesAsync();
                 inputModel.Types = await _typeService.AllTypesAsync();
                 inputModel.Teachers = await _userService.GetTeachersAsync();
